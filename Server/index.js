@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 dotenv.config();
 connectDB();
@@ -25,29 +24,12 @@ app.use("/auth", require("./routes/auth"));
 app.use("/api", require("./routes/textRoutes"));
 
 // Register the chatbot route
-app.use("/api", require("./routes/chatbot"));
+app.use("/", require("./routes/chatbot")); // Use top-level route
 
 // Protected route example
 app.get("/dashboard", (req, res) => {
     res.json({ message: "Welcome to your dashboard" });
 });
-
-const genAI = new GoogleGenerativeAI("AIzaSyAxoak7oXxqdgDtrqg5Trt55frgHlTKxjg");
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-// Function to generate AI content
-async function generateAIContent() {
-    try {
-        const prompt = "Explain how AI works";
-        const result = await model.generateContent(prompt);
-        console.log(result.response.text());
-    } catch (error) {
-        console.error("Error generating AI content:", error);
-    }
-}
-
-// Call the async function
-generateAIContent();
 
 // Global error handler
 app.use((err, req, res, next) => {

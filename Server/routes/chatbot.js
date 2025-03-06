@@ -1,4 +1,3 @@
-// filepath: /Users/smushi/Developer/DyslexiEase(JSS)/DyslexiEase/Server/routes/chatbot.js
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
@@ -12,11 +11,17 @@ router.post('/chatbot', async (req, res) => {
       return res.status(400).json({ error: 'No message provided' });
     }
 
+    // Structuring the message as a prompt
+    const prompt = `You are an AI assistant helping with difficult words. 
+    - Break the word into syllables
+    - Spell it out letter by letter
+    - Provide the meaning
+    Here is the word or sentence: "${message}"`;
+
     const response = await axios.post(
-      'https://gemini-api-url.com/v1/chat', // Replace with the actual Gemini API URL
+      'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent',
       {
-        prompt: message,
-        max_tokens: 150,
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
       },
       {
         headers: {

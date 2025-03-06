@@ -10,8 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin: [
-    'https://your-frontend-url.onrender.com', // Replace with your frontend URL
-    'http://localhost:5173' // Keep for local development
+    'http://localhost:5173', // Local development
+    'https://your-frontend-url.onrender.com' // Replace with your frontend URL for production
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
@@ -20,7 +20,7 @@ app.use(cors({
 // Public routes
 app.use("/auth", require("./routes/auth"));
 
-// ✅ Register the text processing route
+// Register the text processing route
 app.use("/api", require("./routes/textRoutes"));
 
 // Protected route example
@@ -35,4 +35,4 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

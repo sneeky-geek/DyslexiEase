@@ -1,9 +1,7 @@
-const express = require("express");
-const { processText } = require("./textProcessing");
-
+const express = require('express');
 const router = express.Router();
+const { processText } = require('./textProcessing');
 
-// ✅ Route to process text
-router.post("/convert", processText);
+router.post('/convert', processText);
 
 module.exports = router;

@@ -1,115 +1,105 @@
-const detectLanguage = (text) => {
-  const hindiRegex = /^[\u0900-\u097F]+$/; // Hindi Unicode range
-  const kannadaRegex = /^[\u0C80-\u0CFF]+$/; // Kannada Unicode range
 
-  if (hindiRegex.test(text)) return "hindi";
-  if (kannadaRegex.test(text)) return "kannada";
+// Function to detect language
+const detectLanguage = (text) => {
+  console.log("Detecting language for text:", text);
+
+  if (/[\u0900-\u097F]/.test(text)) {
+    console.log("Detected Hindi");
+    return "hindi"; // Hindi Unicode range
+  }
+  if (/[\u0C80-\u0CFF]/.test(text)) {
+    console.log("Detected Kannada");
+    return "kannada"; // Kannada Unicode range
+  }
+
+  console.log("Detected English");
   return "english";
 };
 
-// 🛠 **Hindi Syllable Division**
-const divideIntoSyllablesHindi = (word) => {
-  const vowels = "अआइईउऊऋएऐओऔअंअः";
-  const matras = "ािीुूृेैोौंः";
+// Syllable splitting logic for English (Orton-Gillingham method)
+const splitIntoSyllables = (word) => {
+  console.log("\n--- Splitting Word ---");
+  console.log("Processing word:", word);
+
+  const vowels = "aeiouy";
   let syllables = [];
   let currentSyllable = "";
 
   for (let i = 0; i < word.length; i++) {
     currentSyllable += word[i];
-    if (vowels.includes(word[i]) || matras.includes(word[i])) {
-      syllables.push(currentSyllable);
-      currentSyllable = "";
+    console.log(`Adding letter '${word[i]}' to current syllable: ${currentSyllable}`);
+
+    if (vowels.includes(word[i])) {
+      console.log(`Vowel detected: '${word[i]}'`);
+
+      // Look ahead to see if there's another vowel (diphthong)
+      if (i < word.length - 1 && vowels.includes(word[i + 1])) {
+        console.log(`Diphthong detected: '${word[i]}' + '${word[i + 1]}'`);
+        continue; // Keep adding to the syllable
+      }
+
+      // If next character is a consonant, check for VC/CV rule
+      if (i < word.length - 2 && !vowels.includes(word[i + 1]) && vowels.includes(word[i + 2])) {
+        console.log(`VC/CV Rule applied at index ${i}: Splitting at '${currentSyllable}'`);
+        syllables.push(currentSyllable);
+        currentSyllable = "";
+        continue;
+      }
+
+      // End the syllable if followed by consonants
+      if (i < word.length - 1 && !vowels.includes(word[i + 1])) {
+        console.log(`Syllable ended at consonant: '${currentSyllable}'`);
+        syllables.push(currentSyllable);
+        currentSyllable = "";
+      }
     }
   }
-  if (currentSyllable) syllables.push(currentSyllable);
+
+  if (currentSyllable) {
+    console.log(`Adding final syllable: '${currentSyllable}'`);
+    syllables.push(currentSyllable);
+  }
+
+  console.log(`Final syllables for '${word}':`, syllables);
   return syllables;
 };
 
-// 🛠 **Kannada Syllable Division**
-const divideIntoSyllablesKannada = (word) => {
-  const vowels = "ಅಆಇಈಉಊಋಎಏಐಒಓಔಅಂಅಃ";
-  const matras = "ಾಿೀುೂೃೆೇೈೊೋೌಂಃ";
-  let syllables = [];
-  let currentSyllable = "";
-
-  for (let i = 0; i < word.length; i++) {
-    currentSyllable += word[i];
-    if (vowels.includes(word[i]) || matras.includes(word[i])) {
-      syllables.push(currentSyllable);
-      currentSyllable = "";
-    }
-  }
-  if (currentSyllable) syllables.push(currentSyllable);
-  return syllables;
-};
-
-// 🛠 **English Syllable Division (Basic)**
-const divideIntoSyllablesEnglish = (word) => {
-  return word.match(/[aeiouy]+[^aeiouy]*/gi) || [word];
-};
-
-// 🛠 **Phoneme Highlighting (Hindi)**
-const highlightPhonemesHindi = (word) => {
-  const phonemeColors = {
-    "अ": "red", "आ": "blue", "इ": "green", "ई": "purple",
-    "उ": "orange", "ऊ": "pink", "ए": "cyan", "ऐ": "brown",
-  };
-
-  return word.split("").map((char) => ({
-    letter: char,
-    color: phonemeColors[char] || "black",
-  }));
-};
-
-// 🛠 **Phoneme Highlighting (Kannada)**
-const highlightPhonemesKannada = (word) => {
-  const phonemeColors = {
-    "ಅ": "red", "ಆ": "blue", "ಇ": "green", "ಈ": "purple",
-    "ಉ": "orange", "ಊ": "pink", "ಎ": "cyan", "ಏ": "brown",
-  };
-
-  return word.split("").map((char) => ({
-    letter: char,
-    color: phonemeColors[char] || "black",
-  }));
-};
-
-// 🛠 **Phoneme Highlighting (English)**
-const highlightPhonemesEnglish = (word) => {
-  const phonemeColors = { "a": "red", "e": "blue", "i": "green", "o": "orange", "u": "purple" };
-
-  return word.split("").map((char) => ({
-    letter: char,
-    color: phonemeColors[char.toLowerCase()] || "black",
-  }));
-};
-
-// ✅ **Final Process Function**
+// Function to process text and split into syllables
 const processText = (req, res) => {
   try {
+    console.log("\n--- Received Request ---");
+    console.log("Request Body:", req.body);
+
     const { text } = req.body;
-    if (!text) return res.status(400).json({ error: "No text provided" });
-
-    const language = detectLanguage(text);
-    let syllables = [];
-    let phonemes = [];
-
-    if (language === "hindi") {
-      syllables = divideIntoSyllablesHindi(text);
-      phonemes = highlightPhonemesHindi(text);
-    } else if (language === "kannada") {
-      syllables = divideIntoSyllablesKannada(text);
-      phonemes = highlightPhonemesKannada(text);
-    } else {
-      syllables = divideIntoSyllablesEnglish(text);
-      phonemes = highlightPhonemesEnglish(text);
+    if (!text) {
+      console.error("Error: No text provided");
+      return res.status(400).json({ error: "No text provided" });
     }
 
-    res.status(200).json({ language, syllables, phonemes });
+    console.log("\n--- Processing Input Text ---");
+    console.log("Input Text:", text);
+
+    const language = detectLanguage(text);
+    console.log("Detected Language:", language);
+
+    let words = text.split(" ");
+    console.log("Split Text into Words:", words);
+
+    let syllableWords = words.map(splitIntoSyllables);
+    console.log("Words Split into Syllables:", syllableWords);
+
+    // Format: Words separated by ".", Syllables separated by "-"
+    const formattedText = syllableWords.map(word => word.join("-")).join(" . ");
+
+    console.log("\n--- Final Output ---");
+    console.log("Formatted Text:", formattedText);
+
+    res.status(200).json({ language, formattedText });
   } catch (error) {
     console.error("Error processing text:", error);
     res.status(500).json({ error: "Server error" });
   }
 };
+
 
 module.exports = { processText };

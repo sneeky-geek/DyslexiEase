@@ -47,7 +47,7 @@ const TextEditor = () => {
   };
 
   return (
-    <div style={{ padding: "20px", textAlign: "center" }}>
+    <div style={{ padding: "20px", textAlign: "center", borderBlock: "30px", fontFamily:"nunito", fontWeight:"bold" }}>
       <h2>Text Processing</h2>
       <textarea
         rows="4"
@@ -64,7 +64,9 @@ const TextEditor = () => {
       <br /><br />
       {error && <p style={{ color: "red" }}>{error}</p>}
       <h3>Processed Text:</h3>
-      <p style={{ fontSize: "18px", fontWeight: "bold" }}>{outputText}</p>
+      <div style={{ fontFamily: "OpenDyslexic, sans-serif", padding: "10px", border: "1px solid black", backgroundColor:"#E48E7Fff"}}>
+        <p style={{ fontSize: "36px", fontWeight: "bold" }}>{outputText}</p>
+      </div>
     </div>
   );
 };

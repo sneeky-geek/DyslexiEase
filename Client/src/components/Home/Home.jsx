@@ -1,5 +1,6 @@
 import React from 'react';
 import heroImage from "../../logo/rb.png"; // Replace with your actual image path
+import Chatbot from "../dashboard/Chatbot"
 import "@fontsource/opendyslexic"; 
 import { useNavigate } from 'react-router';
 const Home = () => {
@@ -21,7 +22,7 @@ const Home = () => {
         Start now!
       </button>
     </section>
-      
+      <Chatbot/>
       
       
     </>

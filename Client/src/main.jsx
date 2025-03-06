@@ -7,8 +7,9 @@ import Home from './components/Home/Home.jsx'
 import Signup from './components/Signup/Signup.jsx'
 import Login from './components/Login/Login.jsx'
 import Dashboard from './components/dashboard/Dashboard.jsx'
-import Securedfile from './components/Dashboard/Securedfile.jsx'
+import Chatbot  from './components/Dashboard/Chatbot.jsx'
 import { Route } from 'react-router-dom'
+
 
 
 const router = createBrowserRouter(
@@ -18,7 +19,8 @@ const router = createBrowserRouter(
         <Route path='signup' element={<Signup/>}/>
         <Route path='login' element={<Login/>}/>
         <Route path='dashboard' element={<Dashboard/>}/>
-        <Route path='securedfile' element={<Securedfile/>}/>
+        
+        <Route path='chatbot' element={<Chatbot/>}/>
     </Route>
   )
 )

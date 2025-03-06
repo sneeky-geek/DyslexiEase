@@ -5,6 +5,8 @@ const TextEditor = () => {
   const [outputText, setOutputText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [clickedWord, setClickedWord] = useState(""); // Tracks the clicked word
+  const [fontSize, setFontSize] = useState("text-4xl"); // Controls font size
 
   const processText = async () => {
     if (!inputText) {
@@ -46,10 +48,33 @@ const TextEditor = () => {
     }
   };
 
+  const speakWord = (word) => {
+    if (!word) return;
+
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance(word);
+
+    // 🎯 **Slow Pronunciation**
+    utterance.rate = 0.4; // Super slow (0.5 is slow, 1 is normal)
+
+    synth.speak(utterance);
+
+    // Enlarge text temporarily
+    setClickedWord(word);
+    setFontSize("text-6xl"); // Increase size
+
+    setTimeout(() => {
+      setFontSize("text-4xl"); // Reset size
+      setClickedWord("");
+    }, 1500); // Shrinks back after 1.5 sec
+  };
+
   return (
     <div className="h-screen w-full flex bg-[#DDD0C8] p-8">
       <div className="flex-1 flex flex-col items-center p-4">
-        <label className="text-[#323232] text-4xl font-extrabold font-mono mb-2">TEXT PROCESSING</label>
+        <label className="text-[#323232] text-4xl font-extrabold font-mono mb-2">
+          TEXT PROCESSING
+        </label>
         <textarea
           className="w-full h-[70vh] p-4 bg-[#e2a59b] text-[#323232] rounded-lg focus:outline-none resize-none"
           placeholder="Enter text here..."
@@ -65,9 +90,19 @@ const TextEditor = () => {
         </button>
 
         {error && <p className="text-red-500 mt-2 p-2">{error}</p>}
+
         <h3 className="text-2xl font-extrabold mt-4 p-2">Processed Text:</h3>
         <div className="mt-4 p-4 bg-[#96C0B2ff] rounded-lg w-full text-center">
-          <p className="text-4xl font-mono p-2" style={{ fontFamily: "OpenDyslexic, sans-serif" }}>{outputText}</p>
+          {outputText.split(" ").map((word, index) => (
+            <span
+              key={index}
+              className={`cursor-pointer mx-2 transition-all duration-200 ${word === clickedWord ? fontSize : "text-4xl"}`}
+              style={{ fontFamily: "OpenDyslexic, sans-serif" }}
+              onClick={() => speakWord(word)}
+            >
+              {word}
+            </span>
+          ))}
         </div>
       </div>
     </div>

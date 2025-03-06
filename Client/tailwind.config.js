@@ -7,7 +7,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        dyslexic: ["OpenDyslexic", "Arial", "sans-serif"], // Ensure proper reference
+        dyslexic: ["OpenDyslexic", "Arial", "sans-serif"], 
+        nunito: ["Nunito","sans-serif"],
+        notosansthai:["noto-sans-thai","sans-serif"]// Ensure proper reference
       },
     },
   },

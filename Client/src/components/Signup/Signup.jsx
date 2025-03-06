@@ -31,9 +31,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="min-h-screen flex items-center justify-center bg-[#DDD0C8]">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">Sign Up</h1>
+        <h1 className="text-4xl font-bold text-[#323232] mb-6 text-center">Sign Up</h1>
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4">
             {error}
@@ -41,42 +41,42 @@ const SignUp = () => {
         )}
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
-          <label className="block mb-2 text-sm font-medium text-black" htmlFor="name">
+          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="name">
             Name
           </label>
           <input
             type="text"
             id="name"
             placeholder="Enter your name"
-            className="w-full px-4 py-2 mb-4 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 mb-4 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
           {/* Email Field */}
-          <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="email">
+          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="email">
             Email
           </label>
           <input
             type="email"
             id="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-2 mb-4 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 mb-4 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           {/* Password Field */}
-          <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="password">
+          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="password">
             Password
           </label>
           <input
             type="password"
             id="password"
             placeholder="Enter your password"
-            className="w-full px-4 py-2 mb-6 border rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-2 mb-6 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -85,7 +85,7 @@ const SignUp = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+            className="w-full bg-[#323232] text-lg text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-300"
           >
             Sign Up
           </button>

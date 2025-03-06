@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/noto-sans-thai": "^5.2.5",
+    "@fontsource/nunito": "^5.2.5",
     "@fontsource/opendyslexic": "^5.2.5",
     "@formfacade/embed-react": "^1.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.6.0",

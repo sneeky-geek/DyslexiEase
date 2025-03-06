@@ -6,7 +6,7 @@ import Layout from './Layout.jsx'
 import Home from './components/Home/Home.jsx'
 import Signup from './components/Signup/Signup.jsx'
 import Login from './components/Login/Login.jsx'
-import Dashboard from './components/Dashboard/Dashboard.jsx'
+import Dashboard from './components/dashboard/Dashboard.jsx'
 import Securedfile from './components/Dashboard/Securedfile.jsx'
 import { Route } from 'react-router-dom'
 

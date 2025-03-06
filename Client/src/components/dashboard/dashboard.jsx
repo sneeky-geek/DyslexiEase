@@ -5,6 +5,7 @@ const TextEditor = () => {
   const [text, setText] = useState("");
   const [flashcards, setFlashcards] = useState([]);
   const [history, setHistory] = useState([]);
+  const [responseData, setResponseData] = useState(null);
 
   useEffect(() => {
     // Fetch flashcards and history from backend
@@ -32,7 +33,7 @@ const TextEditor = () => {
     try {
       const response = await axios.post("http://localhost:3002/api/convert", { text });
       console.log("Response:", response.data);
-      alert("Text sent successfully!");
+      setResponseData(response.data);
     } catch (error) {
       console.error("Error sending text:", error);
       alert("Failed to send text.");
@@ -50,13 +51,33 @@ const TextEditor = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        {/* Centered Convert Button */}
         <button
           className="bg-[#323232] text-white px-6 py-3 rounded-lg text-lg hover:bg-gray-700 transition mt-4"
           onClick={handleConvert}
         >
           Convert
         </button>
+
+        {/* Display Processed Text */}
+        {responseData && (
+          <div className="mt-4 p-4 bg-[#96C0B2ff] rounded-lg w-full text-center">
+            <h2 className="text-2xl font-extrabold">Processed Output:</h2>
+            <p className="text-xl font-mono">
+              {responseData.syllables.map((syllable, index) => (
+                <span key={index}>{syllable} - </span>
+              ))}
+            </p>
+
+            <h3 className="mt-2 font-bold">Phonemes:</h3>
+            <p className="text-lg">
+              {responseData.phonemes.map((phoneme, index) => (
+                <span key={index} style={{ color: phoneme.color }}>
+                  {phoneme.letter}
+                </span>
+              ))}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Right Side: Flashcards & History */}

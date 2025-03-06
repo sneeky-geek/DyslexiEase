@@ -30,7 +30,7 @@ const TextEditor = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3002/convert", { text });
+      const response = await axios.post("http://localhost:3002/api/convert", { text });
       console.log("Response:", response.data);
       alert("Text sent successfully!");
     } catch (error) {

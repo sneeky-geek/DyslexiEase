@@ -15,15 +15,14 @@ app.use(cors());
 app.use("/auth", require("./routes/auth"));
 
 // Protected routes (Require authentication)
-app.use("/api/syllables", authenticateToken, require("./routes/syllables"));
-app.use("/api/phonemes", authenticateToken, require("./routes/phonemes"));
-app.use("/api/tts", authenticateToken, require("./routes/tts"));
-app.use("/api/speech", authenticateToken, require("./routes/speech"));
-app.use("/api/flashcards", authenticateToken, require("./routes/flashcards"));
-app.use("/api/progress", authenticateToken, require("./routes/progress"));
-
 app.get("/dashboard", authenticateToken, (req, res) => {
   res.json({ message: "Welcome to your dashboard", user: req.user });
+});
+
+// Add global error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 const PORT = process.env.PORT || 3002;

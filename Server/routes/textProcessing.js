@@ -1,4 +1,4 @@
-export const processText = (req, res) => {
+const processText = (req, res) => {
     try {
       const { text } = req.body;
   
@@ -60,4 +60,3 @@ export const processText = (req, res) => {
     };
     return phonemeColors[letter.toLowerCase()] || "black";
   };
-  

@@ -24,6 +24,9 @@ app.use("/auth", require("./routes/auth"));
 // Register the text processing route
 app.use("/api", require("./routes/textRoutes"));
 
+// Register the chatbot route
+app.use("/api", require("./routes/chatbot"));
+
 // Protected route example
 app.get("/dashboard", (req, res) => {
     res.json({ message: "Welcome to your dashboard" });

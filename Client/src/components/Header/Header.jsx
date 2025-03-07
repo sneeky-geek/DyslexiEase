@@ -46,7 +46,7 @@ const Header = () => {
     };
 
     return (
-        <header className="bg-[#DDD0C8ff]">
+        <header className="bg-[#e9c7b2]">
             <nav className="flex justify-between items-center w-[92%] mx-auto py-2">
                 <div>
                     <Link to="/">

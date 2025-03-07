@@ -39,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#DDD0C8]">
+    <div className="min-h-screen flex items-center justify-center bg-[#e9c7b2]">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h1 className="text-4xl font-bold text-[#323232] mb-6 text-center">Login</h1>
         {error && (

@@ -92,7 +92,7 @@ const TextEditor = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-[#DDD0C8] p-8 relative">
+    <div className="h-screen w-full flex bg-[#e9c7b2] p-8 relative">
       <div className="flex-1 flex flex-col items-center p-4">
         <h1 className="text-[#323232] text-4xl font-extrabold font-mono mb-2 w-full text-center">
           TEXT PROCESSING

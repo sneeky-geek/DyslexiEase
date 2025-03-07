@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Bot } from "lucide-react";
 
 const TextEditor = () => {
   const [inputText, setInputText] = useState("");
@@ -7,6 +9,7 @@ const TextEditor = () => {
   const [error, setError] = useState("");
   const [clickedWord, setClickedWord] = useState(""); // Tracks the clicked word
   const [fontSize, setFontSize] = useState("text-4xl"); // Controls font size
+  const navigate = useNavigate();
 
   const processText = async () => {
     if (!inputText) {
@@ -70,7 +73,7 @@ const TextEditor = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-[#DDD0C8] p-8">
+    <div className="h-screen w-full flex bg-[#DDD0C8] p-8 relative">
       <div className="flex-1 flex flex-col items-center p-4">
         <label className="text-[#323232] text-4xl font-extrabold font-mono mb-2">
           TEXT PROCESSING
@@ -105,6 +108,14 @@ const TextEditor = () => {
           ))}
         </div>
       </div>
+
+      {/* Floating Circular Button */}
+      <button
+        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition duration-300"
+        onClick={() => navigate("/dashboard/chatbot")}
+      >
+        <Bot size={32} />
+      </button>
     </div>
   );
 };

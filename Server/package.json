@@ -19,9 +19,10 @@
     "hyphenopoly": "^5.0.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.0.0",
+    "natural": "^8.0.1",
     "openai": "^4.0.0",
     "say": "^0.16.0",
-    "syllable": "^5.0.0",
+    "syllable": "^5.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

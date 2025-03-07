@@ -4,7 +4,7 @@ import { Bot } from "lucide-react";
 
 const TextEditor = () => {
   const [inputText, setInputText] = useState("");
-  const [outputText, setOutputText] = useState("");
+  const [outputText, setOutputText] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [clickedWord, setClickedWord] = useState(""); // Tracks the clicked word
@@ -36,8 +36,8 @@ const TextEditor = () => {
       console.log("Response Data:", data);
 
       if (response.ok) {
-        setOutputText(data.formattedText);
-        console.log("Formatted Output:", data.formattedText);
+        setOutputText(data.syllables);
+        console.log("Formatted Output:", data.syllables);
       } else {
         setError(data.error || "Something went wrong.");
         console.log("Error from backend:", data.error);
@@ -96,7 +96,7 @@ const TextEditor = () => {
 
         <h3 className="text-2xl font-extrabold mt-4 p-2">Processed Text:</h3>
         <div className="mt-4 p-4 bg-[#96C0B2ff] rounded-lg w-full text-center">
-          {outputText.split(" ").map((word, index) => (
+          {outputText.map((word, index) => (
             <span
               key={index}
               className={`cursor-pointer mx-2 transition-all duration-200 ${word === clickedWord ? fontSize : "text-4xl"}`}

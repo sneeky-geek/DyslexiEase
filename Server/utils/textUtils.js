@@ -1,41 +1,8 @@
-const cmuDictPromise = import('cmu-pronouncing-dictionary');
+const express = require('express');
+const { processText } = require('../textProcessing'); // Ensure correct path
 
-let hyphenator;
+const router = express.Router();
 
-const initializeHyphenopoly = async () => {
-  const Hyphenopoly = await import('hyphenopoly');
-  hyphenator = Hyphenopoly.config({
-    require: ['en-us', 'hi', 'kn'],
-    hyphen: '-',
-    sync: true
-  });
-};
+router.post('/convert', processText); // Directly call processText
 
-const detectLanguage = (text) => {
-  if (/[\u0900-\u097F]/.test(text)) {
-    return "hindi";
-  } else if (/[\u0C80-\u0CFF]/.test(text)) {
-    return "kannada";
-  } else {
-    return "english";
-  }
-};
-
-const divideIntoSyllables = async (text, lang) => {
-  if (!hyphenator) {
-    await initializeHyphenopoly();
-  }
-  const hyphenateText = await hyphenator.get(lang);
-  return hyphenateText(text).split('-');
-};
-
-const highlightPhonemes = async (syllable) => {
-  const cmuDict = await cmuDictPromise;
-  const phonemes = cmuDict.default.get(syllable.toLowerCase()) || [];
-  return phonemes.map(phoneme => ({
-    letter: phoneme,
-    color: "green"
-  }));
-};
-
-module.exports = { detectLanguage, divideIntoSyllables, highlightPhonemes };
+module.exports = router;

@@ -18,13 +18,16 @@ app.use(cors({
 }));
 
 // Public routes
-app.use("/auth", require("./routes/auth"));
+const authRoutes = require("./routes/auth");
+app.use("/auth", authRoutes);
 
 // Register the text processing route
-app.use("/api", require("./routes/textRoutes"));
+const textRoutes = require("./routes/textRoutes");
+app.use("/api", textRoutes);
 
 // Register the chatbot route
-app.use("/", require("./routes/chatbot")); // Use top-level route
+const chatbotRoutes = require("./routes/chatbot");
+app.use("/", chatbotRoutes); // Use top-level route
 
 // Protected route example
 app.get("/dashboard", (req, res) => {

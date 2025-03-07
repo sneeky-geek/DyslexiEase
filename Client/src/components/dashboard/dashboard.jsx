@@ -11,101 +11,84 @@ const TextEditor = () => {
   const [clickedWord, setClickedWord] = useState("");
   const [fontSize, setFontSize] = useState("text-4xl");
   const [recognizedText, setRecognizedText] = useState("");
+  const [feedback, setFeedback] = useState("Listening...");
+  const [showFeedbackWindow, setShowFeedbackWindow] = useState(false);
 
-  // Load Noto Sans Kannada font
   useEffect(() => {
-    // Add the font to the document head
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;700&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap';
     document.head.appendChild(link);
-    
-    return () => {
-      // Clean up when component unmounts
-      document.head.removeChild(link);
-    };
+    return () => document.head.removeChild(link);
   }, []);
 
   const processText = async () => {
     if (!inputText) {
-      console.log("Error: No text entered");
       return setError("Please enter some text.");
     }
-
-    console.log("Sending request to backend...");
     setLoading(true);
     setError("");
-
     try {
-      console.log("Request Payload:", { text: inputText });
-
       const response = await fetch("http://localhost:3002/api/convert", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: inputText }),
       });
-
-      console.log("Response Status:", response.status);
-
       const data = await response.json();
-      console.log("Response Data:", data);
-
       if (response.ok) {
         setOutputText(data.syllables);
-        console.log("Formatted Output:", data.syllables);
       } else {
         setError(data.error || "Something went wrong.");
-        console.log("Error from backend:", data.error);
       }
     } catch (err) {
       setError("Failed to connect to server.");
-      console.log("Connection Error:", err);
     } finally {
       setLoading(false);
-      console.log("Processing complete.");
     }
+  };
+
+  const containsEnglish = (text) => /^[A-Za-z0-9 .,!?']+$/.test(text);
+
+  const startListening = () => {
+    if (!containsEnglish(inputText)) {
+      setError("Pronunciation feedback is only available for English text.");
+      return;
+    }
+    setError("");
+    setShowFeedbackWindow(true);
+    setFeedback("Listening...");
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    
+    recognition.onresult = (event) => {
+      const spokenText = event.results[0][0].transcript.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+      const cleanedInputText = inputText.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+      setRecognizedText(spokenText);
+      setFeedback(spokenText === cleanedInputText ? "Great pronunciation!" : "Try again, keep practicing!");
+    };
+    
+    recognition.onerror = (event) => {
+      setFeedback("Error recognizing speech. Please try again.");
+    };
+    
+    recognition.start();
   };
 
   const speakWord = (word) => {
     if (!word) return;
-
     const synth = window.speechSynthesis;
     const utterance = new SpeechSynthesisUtterance(word);
-
-    // 🎯 *Slow Pronunciation*
-    utterance.rate = 0.4; // Super slow (0.5 is slow, 1 is normal)
-
+    utterance.rate = 0.4;
     synth.speak(utterance);
-
-    // Enlarge text temporarily
     setClickedWord(word);
-    setFontSize("text-6xl"); // Increase size
-
+    setFontSize("text-6xl");
     setTimeout(() => {
-      setFontSize("text-4xl"); // Reset size
+      setFontSize("text-4xl");
       setClickedWord("");
-    }, 1500); // Shrinks back after 1.5 sec
-  };
-
-  // Function to detect if text contains Kannada script
-  const containsKannada = (text) => {
-    // Kannada Unicode range: \u0C80-\u0CFF
-    return /[\u0C80-\u0CFF]/.test(text);
-  };
-
-  // Function to get font style based on text content
-  const getFontStyle = (text) => {
-    if (containsKannada(text)) {
-      return {
-        fontFamily: "'Noto Sans Kannada', Arial, sans-serif",
-        direction: "auto",
-      };
-    } else {
-      return {
-        fontFamily: "OpenDyslexic, sans-serif",
-        direction: "auto",
-      };
-    }
+    }, 1500);
   };
 
   return (
@@ -120,7 +103,7 @@ const TextEditor = () => {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           dir="auto"
-          style={getFontStyle(inputText)}
+          style={{ fontFamily: "OpenDyslexic, sans-serif" }}
         />
         <button
           className="bg-[#323232] text-white px-6 py-3 rounded-lg text-lg hover:bg-gray-700 transition mt-4"
@@ -129,13 +112,11 @@ const TextEditor = () => {
         >
           {loading ? "Processing..." : "Process Text"}
         </button>
-
         {error && <p className="text-red-500 mt-2 p-2">{error}</p>}
-
         <h3 className="text-2xl font-extrabold mt-4 p-2 w-full text-center">
           Processed Text:
         </h3>
-        <div className="mt-4 p-4 bg-[#96C0B2ff] rounded-lg w-full text-center min-h-[100px] overflow-auto">
+        <div className="mt-4 p-4 bg-[#96C0B2ff] rounded-lg w-full text-center min-h-[100px] overflow-auto" style={{ fontFamily: "OpenDyslexic, sans-serif" }}>
           {outputText && outputText.length > 0 ? (
             outputText.map((word, index) => (
               <span
@@ -143,7 +124,6 @@ const TextEditor = () => {
                 className={`cursor-pointer mx-2 transition-all duration-200 inline-block ${
                   word === clickedWord ? fontSize : "text-4xl"
                 }`}
-                style={getFontStyle(word)}
                 onClick={() => speakWord(word)}
               >
                 {word}
@@ -153,15 +133,28 @@ const TextEditor = () => {
             <span className="text-gray-500">No processed text yet</span>
           )}
         </div>
+        <button
+          className="bg-gray-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-gray-700 transition mt-4"
+          onClick={startListening}
+        >
+          Start Pronouncing
+        </button>
       </div>
-
-      {/* Floating Circular Button */}
-      <button
-        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-lg flex items-center justify-center transition duration-300"
-        onClick={() => navigate("/dashboard/chatbot")}
-      >
-        <Bot size={32} />
-      </button>
+      {showFeedbackWindow && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-2/3 shadow-lg flex flex-col items-center">
+            <h2 className="text-xl font-bold mb-4">Pronunciation Feedback</h2>
+            <p className="text-gray-700">Recognized: {recognizedText}</p>
+            <p className="text-lg font-semibold mt-2">{feedback}</p>
+            <button
+              className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+              onClick={() => setShowFeedbackWindow(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

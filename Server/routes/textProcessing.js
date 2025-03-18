@@ -9,7 +9,7 @@ const processText = async (req, res) => {
     const { text } = req.body;
     if (!text) return res.status(400).json({ error: "No text provided" });
 
-    const prompt = `Break the following text into syllables: "${text}". Return only the syllables separated by spaces.`;
+    const prompt = `Break the following text into syllables: "${text}". Return only the syllables separated by oly spaces and in the language inputted dont try to mix any other language while outputting.`;
     const result = await model.generateContent(prompt);
     const responseText = await result.response.text(); // Extract response
 

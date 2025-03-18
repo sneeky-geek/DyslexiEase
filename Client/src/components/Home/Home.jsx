@@ -1,30 +1,34 @@
-import React from 'react';
-import heroImage from "../../logo/rb.png"; // Replace with your actual image path
+import React from "react";
+import "@fontsource/opendyslexic";
+import { useNavigate } from "react-router";
 
-import "@fontsource/opendyslexic"; 
-import { useNavigate } from 'react-router';
 const Home = () => {
- const navigate=useNavigate();
-  
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/login');  
-  }; 
+    navigate("/login");
+  };
 
   return (
     <>
-      {/* Hero Section */}
-   
-      <section className="bg-[#e9c7b2] flex flex-col items-center justify-center h-screen mt-0 text-center font-dyslexic">
-      <h1 className="text-5xl font-bold text-gray-800 mb-6">Read, Learn, and Grow with Ease.</h1>
-      <h2 className="text-4xl font-bold text-gray-800 mb-6">Helping Dyslexic Kids Overcome <br/> Reading Challenges.</h2>
-      <button  onClick={handleClick} className="bg-[#323232] text-white px-6 py-3 rounded-lg text-lg hover:bg-gray-700 transition">
-        Start now!
-      </button>
-    </section>
-     
-      
-      
+      {/* Hero Section - Fullscreen Fix */}
+      <section
+        className="bg-[#e9c7b2] flex flex-col items-center justify-center w-full min-h-screen text-center font-dyslexic m-0 p-0"
+        style={{ height: "100dvh" }} // Ensures full height on all devices
+      >
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+          Read, Learn, and Grow with Ease.
+        </h1>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4 leading-snug">
+          Helping Dyslexic Kids Overcome <br className="hidden md:block" /> Reading Challenges.
+        </h2>
+        <button
+          onClick={handleClick}
+          className="bg-[#323232] text-white w-full sm:w-auto px-6 py-3 rounded-lg text-lg sm:text-xl hover:bg-gray-700 transition"
+        >
+          Start now!
+        </button>
+      </section>
     </>
   );
 };

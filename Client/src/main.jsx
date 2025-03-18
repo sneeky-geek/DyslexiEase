@@ -7,6 +7,7 @@ import Home from './components/Home/Home.jsx'
 import Signup from './components/Signup/Signup.jsx'
 import Login from './components/Login/Login.jsx'
 import Dashboard from './components/dashboard/Dashboard.jsx'
+
 import Chatbot  from './components/dashboard/Chatbot.jsx'
 import { Route } from 'react-router-dom'
 
@@ -25,9 +26,10 @@ const router = createBrowserRouter(
   )
 )
 
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-)
+    
+      <RouterProvider router={router} />
+    
+  </StrictMode>
+);

@@ -6,12 +6,12 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // To handle error messages
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error state before submission
+    setError("");
 
     try {
       const response = await axios.post("http://localhost:3002/auth/signup", {
@@ -20,63 +20,63 @@ const SignUp = () => {
         password,
       });
       console.log(response.data);
-      navigate("/"); // Navigate to home on successful signup
+      navigate("/");
     } catch (err) {
-      if (err.response) {
-        setError(err.response.data.message || "An error occurred. Please try again.");
-      } else {
-        setError(err.message || "An error occurred. Please try again.");
-      }
+      setError(err.response?.data?.message || "An error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#e9c7b2]">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-4xl font-bold text-[#323232] mb-6 text-center">Sign Up</h1>
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 bg-[#e9c7b2]">
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#323232] mb-6 text-center">
+          Sign Up
+        </h1>
+
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4">
+          <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4 text-sm sm:text-base">
             {error}
           </div>
         )}
+
         <form onSubmit={handleSubmit}>
           {/* Name Field */}
-          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="name">
+          <label className="block mb-1 text-sm sm:text-lg font-medium text-[#323232]" htmlFor="name">
             Name
           </label>
           <input
             type="text"
             id="name"
             placeholder="Enter your name"
-            className="w-full px-4 py-2 mb-4 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
 
           {/* Email Field */}
-          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="email">
+          <label className="block mt-4 mb-1 text-sm sm:text-lg font-medium text-[#323232]" htmlFor="email">
             Email
           </label>
           <input
             type="email"
             id="email"
             placeholder="Enter your email"
-            className="w-full px-4 py-2 mb-4 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
 
           {/* Password Field */}
-          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="password">
+          <label className="block mt-4 mb-1 text-sm sm:text-lg font-medium text-[#323232]" htmlFor="password">
             Password
           </label>
           <input
             type="password"
             id="password"
             placeholder="Enter your password"
-            className="w-full px-4 py-2 mb-6 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -85,7 +85,7 @@ const SignUp = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-[#323232] text-lg text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-300"
+            className="mt-6 w-full bg-[#323232] text-white text-lg py-2 px-4 rounded-md hover:bg-gray-700 transition duration-300"
           >
             Sign Up
           </button>

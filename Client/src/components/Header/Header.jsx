@@ -12,21 +12,11 @@ const Header = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("🟢 Header Component Mounted");
-
-        const checkAuth = () => {
-            const token = localStorage.getItem("token");
-            console.log("🔍 Checking Auth - Token:", token);
-            setIsAuthenticated(!!token);
-        };
-
-        checkAuth();
-
-        window.addEventListener("authChange", checkAuth);
-
-        return () => {
-            window.removeEventListener("authChange", checkAuth);
-        };
+        const token = sessionStorage.getItem("authToken");
+        if (token) {
+            setIsAuthenticated(true);
+            navigate("/dashboard"); // Redirect to dashboard if logged in ✅
+        }
     }, []);
 
     const toggleNav = () => {
@@ -35,14 +25,10 @@ const Header = () => {
     };
 
     const handleLogout = () => {
-        console.log("🔴 Logging out...");
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("authToken");
         setIsAuthenticated(false);
-        
-        // Notify other components that authentication state changed
-        window.dispatchEvent(new Event("authChange"));
-
-        navigate("/");
+        navigate("/login");
+        setTimeout(() => window.location.reload(), 100); // Ensures UI updates
     };
 
     return (
@@ -58,7 +44,7 @@ const Header = () => {
                     <div
                         className={`lg:static absolute lg:w-auto w-full lg:min-h-fit min-h-[60vh] left-0 ${
                             navOpen ? "top-[10%]" : "top-[-100%]"
-                        } `}
+                        }`}
                     >
                         <ul className="flex lg:flex-row flex-col items-center lg:gap-[4.5vw] gap-10 text-[1.3rem] font-[Noto Sans Thai]">
                             <li>
@@ -68,18 +54,26 @@ const Header = () => {
                             {!isAuthenticated ? (
                                 <>
                                     <li>
-                                        <NavLink to="/Signup">SIGN UP</NavLink>
+                                        <NavLink to="/signup">SIGN UP</NavLink>
                                     </li>
                                     <li>
-                                        <NavLink to="/Login">LOGIN</NavLink>
+                                        <NavLink to="/login">LOGIN</NavLink>
                                     </li>
                                 </>
                             ) : (
-                                <li>
-                                    <button onClick={handleLogout} className="text-[cream] hover:text-[#ffffff] font-bold py-2 px-4">
-                                        LOGOUT
-                                    </button>
-                                </li>
+                                <>
+                                    <li>
+                                        <NavLink to="/dashboard">DASHBOARD</NavLink>
+                                    </li>
+                                    <li>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="text-[cream] hover:text-[#ffffff] font-bold py-2 px-4"
+                                        >
+                                            LOGOUT
+                                        </button>
+                                    </li>
+                                </>
                             )}
                         </ul>
                     </div>

@@ -5,12 +5,20 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State to hold error messages
-  const navigate = useNavigate(); // For navigation
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear any previous error messages
+    setError("");
+    setLoading(true);
+
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const response = await axios.post("http://localhost:3002/auth/login", {
@@ -18,37 +26,40 @@ const Login = () => {
         password,
       });
 
-      // Log response to inspect structure
       console.log("Login Response:", response.data);
 
-      // Check if login was successful and a token was provided
       if (response.data.token) {
-        // Save token in localStorage or sessionStorage
-        localStorage.setItem("authToken", response.data.token);
-        
-        // Navigate to the dashboard
-        navigate("/dashboard");
+        sessionStorage.setItem("authToken", response.data.token);
+        console.log("Token Stored:", sessionStorage.getItem("authToken"));
+
+        window.location.reload(); // Force UI update after login
       } else {
-        setError("Login failed. Please try again.");
+        setError("Login failed. Invalid credentials.");
       }
     } catch (err) {
       console.error("Error during login:", err.response);
-      const errorMessage = err.response?.data?.message || "An error occurred. Please try again.";
-      setError(errorMessage);
+      setError(
+        err.response?.data?.message || "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#e9c7b2]">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-4xl font-bold text-[#323232] mb-6 text-center">Login</h1>
+    <div className="flex items-center justify-center min-h-screen bg-[#e9c7b2] px-4">
+      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md">
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#323232] mb-6 text-center">
+          Login
+        </h1>
+
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4">
             {error}
           </div>
         )}
+
         <form onSubmit={handleSubmit}>
-          {/* Email Input */}
           <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="email">
             Email
           </label>
@@ -62,8 +73,7 @@ const Login = () => {
             required
           />
 
-          {/* Password Input */}
-          <label className="block mb-2 text-lg font-medium  text-[#323232]" htmlFor="password">
+          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="password">
             Password
           </label>
           <input
@@ -76,12 +86,14 @@ const Login = () => {
             required
           />
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-[#323232] text-lg text-white py-2 px-4 rounded-md hover:bg-gray-700 transition duration-300"
+            disabled={loading}
+            className={`w-full text-lg text-white py-2 px-4 rounded-md transition duration-300 ${
+              loading ? "bg-gray-500 cursor-not-allowed" : "bg-[#323232] hover:bg-gray-700"
+            }`}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
       </div>

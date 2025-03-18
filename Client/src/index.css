@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body{
+  background-color: black;
+}
 /* Root styles with the new color palette */
 :root {
   /* Main colors */
-  --color-bg: #DDD0C8;      /* Background */
+  --color-bg: #e9c7b2;      /* Background */
   --color-text: #323232;    /* Primary text color */
   --color-accent-dark: #5C5C5C; /* Darker accent for contrast */
   --color-accent-light: #A69B97; /* Subtle highlight color */
@@ -44,4 +48,16 @@ button {
 /* Increase size on hover */
 button:hover {
   transform: scale(1.1); /* Slightly enlarges the button */
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg) !important; /* Forces background */
+}
+
+#root, #__next {
+  height: 100%;
 }

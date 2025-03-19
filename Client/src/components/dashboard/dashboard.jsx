@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bot } from "lucide-react";
 
 const TextEditor = () => {
   const navigate = useNavigate();
@@ -15,17 +14,15 @@ const TextEditor = () => {
   const [showFeedbackWindow, setShowFeedbackWindow] = useState(false);
 
   useEffect(() => {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap';
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap";
     document.head.appendChild(link);
     return () => document.head.removeChild(link);
   }, []);
 
   const processText = async () => {
-    if (!inputText) {
-      return setError("Please enter some text.");
-    }
+    if (!inputText) return setError("Please enter some text.");
     setLoading(true);
     setError("");
     try {
@@ -35,11 +32,8 @@ const TextEditor = () => {
         body: JSON.stringify({ text: inputText }),
       });
       const data = await response.json();
-      if (response.ok) {
-        setOutputText(data.syllables);
-      } else {
-        setError(data.error || "Something went wrong.");
-      }
+      if (response.ok) setOutputText(data.syllables);
+      else setError(data.error || "Something went wrong.");
     } catch (err) {
       setError("Failed to connect to server.");
     } finally {
@@ -62,18 +56,15 @@ const TextEditor = () => {
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
-    
+
     recognition.onresult = (event) => {
       const spokenText = event.results[0][0].transcript.toLowerCase().replace(/[^a-z0-9 ]/g, "");
       const cleanedInputText = inputText.toLowerCase().replace(/[^a-z0-9 ]/g, "");
       setRecognizedText(spokenText);
       setFeedback(spokenText === cleanedInputText ? "Great pronunciation!" : "Try again, keep practicing!");
     };
-    
-    recognition.onerror = (event) => {
-      setFeedback("Error recognizing speech. Please try again.");
-    };
-    
+
+    recognition.onerror = () => setFeedback("Error recognizing speech. Please try again.");
     recognition.start();
   };
 
@@ -92,37 +83,50 @@ const TextEditor = () => {
   };
 
   return (
-    <div className="h-screen w-full flex bg-[#e9c7b2] p-8 relative">
-      <div className="flex-1 flex flex-col items-center p-4">
-        <h1 className="text-[#323232] text-4xl font-extrabold font-mono mb-2 w-full text-center">
-          TEXT PROCESSING
+    <div className="min-h-screen w-full  flex justify-center items-center px-6">
+      {/* Glass-Like Dashboard */}
+      <div className="w-full max-w-3xl bg-[#f5ccad] border border-[#e69b8c] backdrop-blur-md rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] p-8 transition-transform transform hover:scale-[1.02] duration-300">
+        {/* Title */}
+        <h1 className="text-[#4b4453] text-4xl font-extrabold mb-6 text-center">
+          Text Processor
         </h1>
+
+        {/* Input Box */}
         <textarea
-          className="w-full h-[70vh] p-4 bg-[#e2a59b] text-[#323232] rounded-lg focus:outline-none resize-none"
+          className="w-full h-48 bg-[#fafafa] border border-[#e0d1c7] rounded-lg text-[#4b4453] px-4 py-3 text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9] transition-all duration-300 resize-none"
           placeholder="Enter text here..."
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
-          dir="auto"
           style={{ fontFamily: "OpenDyslexic, sans-serif" }}
         />
-        <button
-          className="bg-[#323232] text-white px-6 py-3 rounded-lg text-lg hover:bg-gray-700 transition mt-4"
-          onClick={processText}
-          disabled={loading}
-        >
-          {loading ? "Processing..." : "Process Text"}
-        </button>
-        {error && <p className="text-red-500 mt-2 p-2">{error}</p>}
-        <h3 className="text-2xl font-extrabold mt-4 p-2 w-full text-center">
+
+        {/* Error Message */}
+        {error && <p className="text-red-400 mt-2 text-center">{error}</p>}
+
+        {/* Process Button */}
+        <div className="flex justify-center mt-6">
+          <button
+            className={` text-white px-8 py-3 rounded-full font-semibold shadow-md  transition-transform transform hover:scale-105 duration-300 ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={processText}
+            disabled={loading}
+          >
+            {loading ? "Processing..." : "Process Text"}
+          </button>
+        </div>
+
+        {/* Output */}
+        <h3 className="text-2xl font-bold mt-6 text-center text-[#4b4453]">
           Processed Text:
         </h3>
-        <div className="mt-4 p-4 bg-[#96C0B2ff] rounded-lg w-full text-center min-h-[100px] overflow-auto" style={{ fontFamily: "OpenDyslexic, sans-serif" }}>
-          {outputText && outputText.length > 0 ? (
+        <div className="bg-[#f5f5f5] border border-[#e0d1c7] p-4 rounded-lg mt-4 shadow-md min-h-[100px] overflow-auto text-center">
+          {outputText.length > 0 ? (
             outputText.map((word, index) => (
               <span
                 key={index}
-                className={`cursor-pointer mx-2 transition-all duration-200 inline-block ${
-                  word === clickedWord ? fontSize : "text-4xl"
+                className={`cursor-pointer mx-2 inline-block transition-transform duration-200 ${
+                  word === clickedWord ? fontSize : "text-2xl"
                 }`}
                 onClick={() => speakWord(word)}
               >
@@ -130,24 +134,32 @@ const TextEditor = () => {
               </span>
             ))
           ) : (
-            <span className="text-gray-500">No processed text yet</span>
+            <span className="text-gray-400">No processed text yet</span>
           )}
         </div>
-        <button
-          className="bg-gray-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-gray-700 transition mt-4"
-          onClick={startListening}
-        >
-          Start Pronouncing
-        </button>
+
+        {/* Start Pronouncing */}
+        <div className="flex justify-center mt-6">
+          <button
+            className=" text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#6d5c7e] transition-transform transform hover:scale-105 duration-300"
+            onClick={startListening}
+          >
+            Start Pronouncing
+          </button>
+        </div>
       </div>
+
+      {/* Feedback Window */}
       {showFeedbackWindow && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg w-2/3 shadow-lg flex flex-col items-center">
-            <h2 className="text-xl font-bold mb-4">Pronunciation Feedback</h2>
+          <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+            <h2 className="text-xl font-bold mb-4 text-[#4b4453]">
+              Pronunciation Feedback
+            </h2>
             <p className="text-gray-700">Recognized: {recognizedText}</p>
             <p className="text-lg font-semibold mt-2">{feedback}</p>
             <button
-              className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700"
+              className="mt-4 bg-[#f29b9b] text-white px-6 py-2 rounded-lg hover:bg-[#e68a8a] transition"
               onClick={() => setShowFeedbackWindow(false)}
             >
               Close

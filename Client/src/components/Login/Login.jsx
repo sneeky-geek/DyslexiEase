@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "@fontsource/opendyslexic"; // Import OpenDyslexic font
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,7 +32,6 @@ const Login = () => {
       if (response.data.token) {
         sessionStorage.setItem("authToken", response.data.token);
         console.log("Token Stored:", sessionStorage.getItem("authToken"));
-
         window.location.reload(); // Force UI update after login
       } else {
         setError("Login failed. Invalid credentials.");
@@ -48,53 +48,74 @@ const Login = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#e9c7b2] px-4">
-      <div className="bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md">
-        <h1 className="text-3xl sm:text-4xl font-bold text-[#323232] mb-6 text-center">
+      {/* Glassmorphic Card */}
+      <div className="backdrop-blur-xl bg-white border-2 border-white/70 shadow-2xl shadow-gray-500 rounded-2xl p-6 sm:p-8 w-full max-w-sm sm:max-w-md transition-transform transform hover:scale-105 duration-300">
+        {/* Title */}
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#323232] mb-6 text-center font-[OpenDyslexic]">
           Login
         </h1>
 
+        {/* Error Message */}
         {error && (
-          <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4">
+          <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4 text-sm sm:text-base transition-opacity duration-300">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="email">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            className="w-full px-4 py-2 mb-4 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Email Field */}
+          <div>
+            <label
+              className="block mb-1 text-sm sm:text-lg font-medium text-[#323232] font-[OpenDyslexic]"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 border border-gray-400 rounded-lg bg-white/40 text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-          <label className="block mb-2 text-lg font-medium text-[#323232]" htmlFor="password">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-            className="w-full px-4 py-2 mb-6 border rounded-md text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          {/* Password Field */}
+          <div>
+            <label
+              className="block mb-1 text-sm sm:text-lg font-medium text-[#323232] font-[OpenDyslexic]"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 border border-gray-400 rounded-lg bg-white/40 text-[#323232] focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full text-lg text-white py-2 px-4 rounded-md transition duration-300 ${
-              loading ? "bg-gray-500 cursor-not-allowed" : "bg-[#323232] hover:bg-gray-700"
-            }`}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
+          {/* Submit Button */}
+          <div className="flex justify-center mt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              className={`bg-[#323232] text-white px-6 py-2 rounded-full text-lg font-medium shadow-lg shadow-gray-500 transition-transform transform duration-300 ${
+                loading
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:scale-110 hover:bg-gray-700"
+              }`}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../AuthContext";
 import "@fontsource/opendyslexic"; // Import OpenDyslexic font
 
 const Login = () => {
@@ -8,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -27,20 +29,14 @@ const Login = () => {
         password,
       });
 
-      console.log("Login Response:", response.data);
-
       if (response.data.token) {
-        sessionStorage.setItem("authToken", response.data.token);
-        console.log("Token Stored:", sessionStorage.getItem("authToken"));
-        window.location.reload(); // Force UI update after login
+        login(response.data.token); // Store token
+        navigate("/dashboard"); // Redirect to dashboard
       } else {
         setError("Login failed. Invalid credentials.");
       }
     } catch (err) {
-      console.error("Error during login:", err.response);
-      setError(
-        err.response?.data?.message || "Something went wrong. Please try again."
-      );
+      setError(err.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
     }

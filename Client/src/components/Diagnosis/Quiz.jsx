@@ -17,7 +17,7 @@ const Quiz = ({ setStage, setScore }) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-md max-w-2xl w-full">
+    <div className=" p-8 rounded-lg shadow-md max-w-2xl w-full">
       <QuestionRenderer
         key={questions[currentIndex].id}
         question={questions[currentIndex]}

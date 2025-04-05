@@ -7,14 +7,16 @@ const Diagnosis = () => {
   const [score, setScore] = useState(0);
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-[#fdf6ec]">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-[#e9c7b2] font-['Roboto']">
       {stage === "start" && (
-        <div className="text-center space-y-6 bg-white p-10 rounded-xl shadow-xl">
-          <h1 className="text-3xl font-bold text-[#4b4453]">Dyslexia Diagnosis Quiz</h1>
-          <p className="text-[#666]">Test yourself with fun and simple questions!</p>
+        <div className="text-center space-y-6 bg-white p-10 rounded-3xl shadow-2xl max-w-md w-full">
+          <h1 className="text-4xl font-extrabold text-gray-900">Dyslexia Diagnosis Quiz</h1>
+          <p className="text-gray-700 text-lg">
+            Test yourself with fun and simple questions!
+          </p>
           <button
             onClick={() => setStage("quiz")}
-            className="px-6 py-2 bg-[#323232] text-white rounded-full hover:scale-105 transition"
+            className="px-6 py-3 bg-gray-900 text-white rounded-full shadow-md hover:bg-gray-800 hover:scale-105 transition-transform duration-200"
           >
             Start Quiz
           </button>

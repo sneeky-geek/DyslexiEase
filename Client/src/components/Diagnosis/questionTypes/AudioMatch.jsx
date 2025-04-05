@@ -7,21 +7,23 @@ const AudioMatch = ({ question, onAnswer }) => {
   };
 
   return (
-    <div className="bg-[#e9c7b2] min-h-screen p-6 font-['Roboto'] flex items-center justify-center">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-xl space-y-6">
-        <h3 className="text-2xl font-bold text-gray-800">{question.question}</h3>
+    <div className="bg-[#f5f6fa] min-h-screen p-6 font-['Roboto'] flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-xl space-y-6 border border-gray-100">
+        <h3 className="text-2xl font-semibold text-gray-900">{question.question}</h3>
+        
         <button
           onClick={playAudio}
-          className="px-5 py-2 bg-[#9c88ff] text-white rounded-lg shadow hover:bg-[#7f70d7] transition"
+          className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-500 transition-colors shadow-sm"
         >
           🔊 Play Audio
         </button>
+
         <div className="grid gap-3">
           {question.options.map((opt, i) => (
             <button
               key={i}
               onClick={() => onAnswer(opt === question.answer)}
-              className="p-3 bg-[#f7f7f7] hover:bg-[#ddd] rounded-lg shadow"
+              className="p-3 text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors shadow-sm text-left"
             >
               {opt}
             </button>

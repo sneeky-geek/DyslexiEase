@@ -13,7 +13,7 @@ import Chatbot from './components/dashboard/Chatbot.jsx';
 import { AuthProvider } from './components/AuthContext';
 import EyeTrackingTest from './components/Home/EyeTrackingTest.jsx';
 import Diagnosis from './components/Diagnosis/Diagnosis.jsx'; // ✅ Import Diagnosis
-
+import Canvas from './components/Home/Canvas.jsx'; // ✅ Import Canvas
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />}>
@@ -23,6 +23,7 @@ const router = createBrowserRouter(
       <Route path='dashboard' element={<Dashboard />} />
       <Route path='dashboard/chatbot' element={<Chatbot />} />
       <Route path='EyeTrackingTest' element={<EyeTrackingTest />} />
+     <Route path='canvas' element={<Canvas />} /> {/* ✅ Added Canvas route */}
       <Route path='diagnosis' element={<Diagnosis />} /> {/* ✅ Added Diagnosis route */}
     </Route>
   )

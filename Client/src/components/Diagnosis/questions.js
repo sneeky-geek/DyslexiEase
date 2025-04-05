@@ -86,4 +86,16 @@ export const questions = [
     question: "Type the following sentence: 'Dyslexia is not a disability, it’s a different ability.'",
     answer: "Dyslexia is not a disability, it’s a different ability.",
   },
+  {
+    id: 11,
+    type: "interactive",
+    question: "Complete the Eye Tracking Test to analyze your reading patterns.",
+    component: "EyeTrackingTest", // Reference to the EyeTrackingTest component
+  },
+  {
+    id: 12,
+    type: "interactive",
+    question: "Use the Canvas to draw or write as instructed.",
+    component: "Canvas", // Reference to the Canvas component
+  },
 ];

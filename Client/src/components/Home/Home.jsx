@@ -16,6 +16,9 @@ const Home = () => {
   const handleEyeTest = () => {
     navigate("/EyeTrackingTest");
   };
+  const handleCanvas = () => {
+    navigate("/canvas"); // ✅ Navigate to canvas
+  }
 
   return (
     <>
@@ -77,6 +80,7 @@ const Home = () => {
           }
         `}
       </style>
+      <button onClick={handleCanvas}>canvas</button>
     </>
   );
 };

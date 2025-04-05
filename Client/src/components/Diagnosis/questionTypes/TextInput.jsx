@@ -9,7 +9,7 @@ const TextInput = ({ question, onAnswer }) => {
   };
 
   return (
-    <div className="space-y-4 font-['Roboto'] text-gray-800 bg-[#e9c7b2] p-6 rounded-lg">
+    <div className="space-y-4 font-['Roboto'] text-black bg-white p-6 rounded-lg">
       <h3 className="text-xl font-semibold">{question.question}</h3>
       <input
         type="text"

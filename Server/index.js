@@ -29,6 +29,10 @@ app.use("/api", textRoutes);
 const chatbotRoutes = require("./routes/chatbot");
 app.use("/", chatbotRoutes); // Use top-level route
 
+// Register the paragraph generation route
+const generateParagraphRoutes = require("./routes/generateParagraph");
+app.use("/api/paragraph", generateParagraphRoutes);
+
 // Protected route example
 app.get("/dashboard", (req, res) => {
     res.json({ message: "Welcome to your dashboard" });

@@ -217,7 +217,60 @@ const TextEditor = () => {
       </div>
 
       {/* Modal */}
-      {/* ...modal and feedback window remain unchanged... */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full space-y-4">
+            <h2 className="text-xl font-bold text-center">Generate Paragraph</h2>
+
+            <div className="flex flex-col space-y-2">
+              <label className="font-medium">Language</label>
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="border p-2 rounded"
+              >
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+              </select>
+
+              <label className="font-medium">Complexity</label>
+              <select
+                value={complexity}
+                onChange={(e) => setComplexity(e.target.value)}
+                className="border p-2 rounded"
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+
+              <label className="font-medium">Topic</label>
+              <input
+                type="text"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                className="border p-2 rounded"
+                placeholder="e.g., Animals, Space..."
+              />
+            </div>
+
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 rounded bg-[#323232] text-white hover:scale-105 transition"
+                onClick={generateAndProcessText}
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

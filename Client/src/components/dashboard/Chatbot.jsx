@@ -14,7 +14,6 @@ const Chatbot = () => {
     () => ({
       "What is the primary goal of this platform?": `To detect early signs of dyslexia and provide personalized, adaptive learning interventions using AI.`,
       "How does the system detect dyslexia in children?": `Using eye-tracking via computer vision, it identifies signs like letter reversals (e.g., "b" vs. "d"), line skipping, and reading hesitation.`,
-      "What is a Dyslexia Risk Map?": `It's a visual heatmap that highlights areas of difficulty in reading, allowing for data-driven interventions instead of just a generic score.`,
       "How does the platform personalize learning?": `AI analyzes the learner's style (visual or auditory) and dynamically adapts content using the Orton-Gillingham method for phonics reinforcement.`,
       "Does the system support handwriting improvement?": `Yes, it offers real-time handwriting feedback using touchscreen input and AI to correct letter formation and improve motor skills.`,
       "What speech-related features are included?": `It includes voice recognition to provide pronunciation feedback, break words into phonics, and help with fluent word formation.`,

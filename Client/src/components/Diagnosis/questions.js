@@ -62,11 +62,11 @@ export const questions = [
   {
     id: 8,
     type: "imageSelect",
-    question: "Select the mirror image of the letter 'd'",
+    question: "Select the mirror image of the letter '9'",
     options: [
-      { image: "/images/b.png", label: "b" },
+      { image: "/images/p.png", label: "p" },
       { image: "/images/d.png", label: "d" },
-      { image: "/images/o.png", label: "p" },
+      { image: "/images/o.png", label: "o"},
     ],
     answer: "d",
   },
@@ -76,7 +76,7 @@ export const questions = [
     question: "Select the mirror image of the number '3'",
     options: [
       { image: "/images/3.png", label: "3" },
-      { image: "/images/mirror3.png", label: "Mirror 3" },
+      { image: "/images/mirror3.png", label: "3" },
       { image: "/images/8.png", label: "8" },
     ],
     answer: "Mirror 3",

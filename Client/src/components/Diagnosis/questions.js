@@ -1,4 +1,5 @@
 export const questions = [
+  // 1–3: Multiple Choice Questions (MCQ) for language processing
   {
     id: 1,
     type: "multipleChoice",
@@ -20,28 +21,26 @@ export const questions = [
     options: ["Sad", "Joyful", "Angry", "Scared"],
     answer: "Joyful",
   },
+
+  // 4–5: Image identification (image shown, select correct word)
   {
     id: 4,
     type: "imageSelect",
-    question: "Click on the image that matches the word: 'Cat'",
-    options: [
-      { image: "/images/dog.png", label: "Dog" },
-      { image: "/images/horse.png", label: "Horse" },
-      { image: "/images/cat.png", label: "Cat" },
-    ],
-    answer: "Cat",
+    question: "Which word matches the image?",
+    image: "/images/dog.png",
+    options: ["Dog", "Bog", "Log", "Cog"],
+    answer: "Dog",
   },
   {
     id: 5,
     type: "imageSelect",
-    question: "Click on the image that matches the word: 'Apple'",
-    options: [
-      { image: "/images/banana.png", label: "Banana" },
-      { image: "/images/apple.png", label: "Apple" },
-      { image: "/images/orange.png", label: "Orange" },
-    ],
-    answer: "Apple",
+    question: "Which word matches the image?",
+    image: "/images/cat.png",
+    options: ["Cat", "Mat", "Oat", "Mot"],
+    answer: "Cat",
   },
+
+  // 6–7: Audio match for phonological awareness
   {
     id: 6,
     type: "audioMatch",
@@ -58,6 +57,8 @@ export const questions = [
     options: ["Banana", "April", "Dananana"],
     answer: "Banana",
   },
+
+  // 8–9: Mirror image recognition
   {
     id: 8,
     type: "imageSelect",
@@ -80,12 +81,16 @@ export const questions = [
     ],
     answer: "Mirror 3",
   },
+
+  // 10: Sentence typing to assess motor and memory
   {
     id: 10,
     type: "textInput",
     question: "Type the following sentence: 'Dyslexia is not a disability, it’s a different ability.'",
     answer: "Dyslexia is not a disability, it’s a different ability.",
   },
+
+  // 11–12: Interactive components for deeper evaluation
   {
     id: 11,
     type: "interactive",

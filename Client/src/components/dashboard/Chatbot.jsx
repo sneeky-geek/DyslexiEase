@@ -134,7 +134,7 @@ const Chatbot = () => {
             ))}
             {loading && (
               <div className="text-gray-500 text-left text-sm animate-pulse">
-                Gemini is thinking...
+                 let me think...
               </div>
             )}
             <div ref={messagesEndRef} />

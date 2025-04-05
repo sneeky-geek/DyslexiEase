@@ -25,15 +25,16 @@ export const questions = [
   // 4–5: Image identification (image shown, select correct word)
   {
     id: 4,
-    type: "imageSelect",
+    type: "multipleChoice",
     question: "Which word matches the image?",
     image: "/images/dog.png",
     options: ["Dog", "Bog", "Log", "Cog"],
     answer: "Dog",
   },
   {
+     
     id: 5,
-    type: "imageSelect",
+    type: "multipleChoice",
     question: "Which word matches the image?",
     image: "/images/cat.png",
     options: ["Cat", "Mat", "Oat", "Mot"],
@@ -45,7 +46,7 @@ export const questions = [
     id: 6,
     type: "audioMatch",
     question: "Select the word you hear",
-    audioSrc: "/audio/bird.mp3",
+    audioSrc: "/audio/sharadbird.mp3",
     options: ["Bird", "Beard", "Board"],
     answer: "Bird",
   },

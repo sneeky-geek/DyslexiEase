@@ -52,12 +52,7 @@ const Home = () => {
               Take Test
             </button>
 
-            <button
-              onClick={handleEyeTest}
-              className="bg-[#323232] text-white px-8 py-3 rounded-full text-lg sm:text-xl transition-transform transform hover:scale-105 hover:bg-gray-700 duration-300"
-            >
-              Eye Tracking
-            </button>
+            
           </div>
         </div>
       </section>
@@ -80,7 +75,7 @@ const Home = () => {
           }
         `}
       </style>
-      <button onClick={handleCanvas}>canvas</button>
+     
     </>
   );
 };

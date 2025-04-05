@@ -132,25 +132,17 @@ const EyeTrackingTest = ({ onNext }) => {
         </p>
         <button
           onClick={() => setTracking((prev) => !prev)}
-          className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg"
+          className="mt-6 bg-[#170f3b] text-white px-6 py-2 rounded-lg"
         >
           {tracking ? "Stop Tracking" : "Start Tracking"}
         </button>
       </div>
 
-      <div className="mt-8 p-4 bg-white border rounded shadow-md w-3/4">
-        <h2 className="text-lg font-semibold mb-2">📊 Live Analysis</h2>
-        <ul className="text-left">
-          <li>📝 Words Read: {analysis.totalWordsRead}</li>
-          <li>🔁 Fixations: {analysis.fixations}</li>
-          <li>⏭️ Line Skips: {analysis.lineSkips}</li>
-          <li>🔄 Letter Confusions: {analysis.letterConfusions}</li>
-        </ul>
-      </div>
+     
 
       <button
         onClick={onNext}
-        className="mt-6 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+        className="mt-6 bg-[#323232] text-white px-6 py-2 rounded-lg hover:bg-green-700"
       >
         Next
       </button>

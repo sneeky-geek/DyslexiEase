@@ -3,7 +3,7 @@ import MultipleChoice from "./questionTypes/MultipleChoice";
 import ImageSelect from "./questionTypes/ImageSelect";
 import AudioMatch from "./questionTypes/AudioMatch";
 import TextInput from "./questionTypes/TextInput";
-import EyeTrackingTest from "../Home/EyeTrackingTest";
+
 import Canvas from "../Home/Canvas";
 
 const QuestionRenderer = ({ question, onAnswer }) => {
@@ -38,9 +38,7 @@ const QuestionRenderer = ({ question, onAnswer }) => {
       return <AudioMatch question={question} onAnswer={onAnswer} />;
     case "textInput":
       return <TextInput question={question} onAnswer={onAnswer} />;
-    case "eyeTracking":
-      // ✅ FIX: Render EyeTrackingTest once with a button
-      return renderWithNextButton(<EyeTrackingTest />);
+    
     case "canvas":
     case "interactive":
       // ✅ FIX: Render Canvas only once with a button

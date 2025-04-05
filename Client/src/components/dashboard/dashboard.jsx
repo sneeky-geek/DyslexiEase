@@ -1,3 +1,4 @@
+// Add this at the top with your other imports
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +14,11 @@ const TextEditor = () => {
   const [feedback, setFeedback] = useState("Listening...");
   const [showFeedbackWindow, setShowFeedbackWindow] = useState(false);
 
+  const [showModal, setShowModal] = useState(false);
+  const [language, setLanguage] = useState("english");
+  const [complexity, setComplexity] = useState("intermediate");
+  const [topic, setTopic] = useState("");
+
   useEffect(() => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -21,21 +27,50 @@ const TextEditor = () => {
     return () => document.head.removeChild(link);
   }, []);
 
-  const processText = async () => {
-    if (!inputText) return setError("Please enter some text.");
+  const processText = async (customText = null) => {
+    const textToProcess = customText || inputText;
+    if (!textToProcess) return setError("Please enter some text.");
     setLoading(true);
     setError("");
     try {
       const response = await fetch("http://localhost:3002/api/convert", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: inputText }),
+        body: JSON.stringify({ text: textToProcess }),
       });
       const data = await response.json();
-      if (response.ok) setOutputText(data.syllables);
-      else setError(data.error || "Something went wrong.");
+      if (response.ok) {
+        setOutputText(data.syllables);
+        setInputText(textToProcess); // Also show the paragraph in the textarea
+      } else {
+        setError(data.error || "Something went wrong.");
+      }
     } catch (err) {
       setError("Failed to connect to server.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const generateAndProcessText = async () => {
+    setShowModal(false);
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("http://localhost:3002/api/paragraph/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ language, complexity, topic }),
+      });
+
+      if (!res.ok) throw new Error("Failed to generate paragraph");
+      const data = await res.json();
+      await processText(data.paragraph);
+    } catch (err) {
+      setError(err.message || "Text generation failed");
     } finally {
       setLoading(false);
     }
@@ -83,15 +118,10 @@ const TextEditor = () => {
   };
 
   return (
-    <div className="min-h-screen w-full  flex justify-center items-center px-6">
-      {/* Glass-Like Dashboard */}
-      <div className="w-full max-w-3xl bg-[#f5ccad] border border-[#e69b8c] backdrop-blur-md rounded-2xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] p-8 transition-transform transform hover:scale-[1.02] duration-300">
-        {/* Title */}
-        <h1 className="text-[#4b4453] text-4xl font-extrabold mb-6 text-center">
-          Text Processor
-        </h1>
+    <div className="min-h-screen w-full flex justify-center items-center px-6">
+      <div className="w-full max-w-3xl bg-[#f5ccad] border border-[#e69b8c] backdrop-blur-md rounded-2xl shadow-lg p-8">
+        <h1 className="text-[#4b4453] text-4xl font-extrabold mb-6 text-center">Text Processor</h1>
 
-        {/* Input Box */}
         <textarea
           className="w-full h-48 bg-[#fafafa] border border-[#e0d1c7] rounded-lg text-[#4b4453] px-4 py-3 text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9] transition-all duration-300 resize-none"
           placeholder="Enter text here..."
@@ -100,26 +130,28 @@ const TextEditor = () => {
           style={{ fontFamily: "OpenDyslexic, sans-serif" }}
         />
 
-        {/* Error Message */}
         {error && <p className="text-red-400 mt-2 text-center">{error}</p>}
 
-        {/* Process Button */}
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-center gap-4 mt-6">
           <button
-            className={` text-white px-8 py-3 rounded-full font-semibold shadow-md  transition-transform transform hover:scale-105 duration-300 ${
+            className={`bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-transform hover:scale-105 ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            onClick={processText}
+            onClick={() => processText()}
             disabled={loading}
           >
             {loading ? "Processing..." : "Process Text"}
           </button>
+
+          <button
+            className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-transform hover:scale-105"
+            onClick={() => setShowModal(true)}
+          >
+            Generate Text
+          </button>
         </div>
 
-        {/* Output */}
-        <h3 className="text-2xl font-bold mt-6 text-center text-[#4b4453]">
-          Processed Text:
-        </h3>
+        <h3 className="text-2xl font-bold mt-6 text-center text-[#4b4453]">Processed Text:</h3>
         <div className="bg-[#f5f5f5] border border-[#e0d1c7] p-4 rounded-lg mt-4 shadow-md min-h-[100px] overflow-auto text-center">
           {outputText.length > 0 ? (
             outputText.map((word, index) => (
@@ -138,10 +170,9 @@ const TextEditor = () => {
           )}
         </div>
 
-        {/* Start Pronouncing */}
         <div className="flex justify-center mt-6">
           <button
-            className=" text-white px-8 py-3 rounded-full font-semibold shadow-md hover:bg-[#6d5c7e] transition-transform transform hover:scale-105 duration-300"
+            className="bg-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-700 transition-transform hover:scale-105"
             onClick={startListening}
           >
             Start Pronouncing
@@ -149,13 +180,69 @@ const TextEditor = () => {
         </div>
       </div>
 
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg space-y-4">
+            <h2 className="text-xl font-semibold text-center">Generate Paragraph</h2>
+
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Language:</label>
+              <input
+                type="text"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Complexity:</label>
+              <select
+                value={complexity}
+                onChange={(e) => setComplexity(e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-md"
+              >
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block font-medium text-gray-700">Topic (optional):</label>
+              <input
+                type="text"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                placeholder="Enter a topic..."
+                className="w-full p-2 border border-gray-300 rounded-md"
+              />
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-4">
+              <button
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                onClick={generateAndProcessText}
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Feedback Window */}
       {showFeedbackWindow && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h2 className="text-xl font-bold mb-4 text-[#4b4453]">
-              Pronunciation Feedback
-            </h2>
+            <h2 className="text-xl font-bold mb-4 text-[#4b4453]">Pronunciation Feedback</h2>
             <p className="text-gray-700">Recognized: {recognizedText}</p>
             <p className="text-lg font-semibold mt-2">{feedback}</p>
             <button

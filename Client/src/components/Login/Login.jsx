@@ -31,7 +31,7 @@ const Login = () => {
 
       if (response.data.token) {
         login(response.data.token); // Store token
-        navigate("/user"); // Redirect to dashboard
+        navigate("/dashboard"); // Redirect to dashboard
       } else {
         setError("Login failed. Invalid credentials.");
       }

@@ -2,52 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body{
+/* ===================== */
+/* Root and Body Styling */
+/* ===================== */
+body {
   background-color: black;
 }
-/* Root styles with the new color palette */
-:root {
-  /* Main colors */
-  --color-bg: #e9c7b2;      /* Background */
-  --color-text: #323232;    /* Primary text color */
-  --color-accent-dark: #5C5C5C; /* Darker accent for contrast */
-  --color-accent-light: #A69B97; /* Subtle highlight color */
-  --color-white: #ffffff;   /* White for buttons, sections */
 
-  /* Apply the new background color */
+:root {
+  --color-bg: #e9c7b2;
+  --color-text: #323232;
+  --color-accent-dark: #5C5C5C;
+  --color-accent-light: #A69B97;
+  --color-white: #ffffff;
+
   color: var(--color-text);
   background-color: var(--color-bg);
   overflow-x: hidden;
-}
-
-/* Custom scrollbar styling */
-body::-webkit-scrollbar {
-  width: 10px;
-}
-body::-webkit-scrollbar-track {
-  background: var(--color-accent-light); /* Subtle track */
-}
-body::-webkit-scrollbar-thumb {
-  background-color: var(--color-accent-dark); /* Darker contrast */
-  border-radius: 10px;
-  border: 1px solid var(--color-text); /* Smooth blend */
-}
-
-/* Button styling */
-button {
-  background-color: var(--color-text); /* Dark button */
-  color: var(--color-white); /* White text */
-  border: 1px solid var(--color-accent-dark); /* Border */
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-size: 1rem;
-  transition: transform 0.3s ease-in-out; /* Smooth scaling transition */
-}
-
-/* Increase size on hover */
-button:hover {
-  transform: scale(1.1); /* Slightly enlarges the button */
 }
 
 html, body {
@@ -55,9 +26,109 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: var(--color-bg) !important; /* Forces background */
+  background-color: var(--color-bg) !important;
 }
 
 #root, #__next {
   height: 100%;
+}
+
+/* ====================== */
+/* Scrollbar Custom Style */
+/* ====================== */
+body::-webkit-scrollbar {
+  width: 10px;
+}
+body::-webkit-scrollbar-track {
+  background: var(--color-accent-light);
+}
+body::-webkit-scrollbar-thumb {
+  background-color: var(--color-accent-dark);
+  border-radius: 10px;
+  border: 1px solid var(--color-text);
+}
+
+/* =================== */
+/* Button Styling      */
+/* =================== */
+button {
+  background-color: var(--color-text);
+  color: var(--color-white);
+  border: 1px solid var(--color-accent-dark);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+/* =================== */
+/* FAQ Text Styling    */
+/* =================== */
+.faq-text {
+  color: var(--color-accent-dark);
+  font-weight: bold;
+}
+
+/* =================== */
+/* Fade-in Animation   */
+/* =================== */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+/* ========================== */
+/* Chatbot Widget Styling     */
+/* ========================== */
+.chatbot-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 350px;
+  max-width: 90vw;
+  background-color: var(--color-white);
+  color: var(--color-text);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  overflow: hidden;
+  z-index: 9999;
+  animation: fade-in 0.5s ease-in-out;
+}
+
+/* Close Button */
+.chatbot-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Chatbot mascot (if needed) */
+.chatbot-avatar {
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 9998;
+  transition: transform 0.3s ease;
+}
+
+.chatbot-avatar:hover {
+  transform: scale(1.1);
 }

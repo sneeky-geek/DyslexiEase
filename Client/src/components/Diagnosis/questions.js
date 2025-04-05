@@ -21,29 +21,19 @@ export const questions = [
     options: ["Sad", "Joyful", "Angry", "Scared"],
     answer: "Joyful",
   },
-
-  // 4–5: Image identification (image shown, select correct word)
   {
     id: 4,
     type: "multipleChoice",
-    question: "Which word matches the image?",
-    image: "/images/dog.png",
-    options: ["Dog", "Bog", "Log", "Cog"],
-    answer: "Dog",
+    question: "Which word sounds the same as 'bare'?",
+    options: ["Bear", "Bar", "Beer", "Boar"],
+    answer: "Bear",
   },
-  {
-     
-    id: 5,
-    type: "multipleChoice",
-    question: "Which word matches the image?",
-    image: "/images/cat.png",
-    options: ["Cat", "Mat", "Oat", "Mot"],
-    answer: "Cat",
-  },
+
+ 
 
   // 6–7: Audio match for phonological awareness
   {
-    id: 6,
+    id: 5,
     type: "audioMatch",
     question: "Select the word you hear",
     audioSrc: "/audio/sharadbird.mp3",
@@ -51,7 +41,7 @@ export const questions = [
     answer: "Bird",
   },
   {
-    id: 7,
+    id: 6,
     type: "audioMatch",
     question: "Select the word you hear",
     audioSrc: "/audio/banana.mp3",
@@ -61,7 +51,7 @@ export const questions = [
 
   // 8–9: Mirror image recognition
   {
-    id: 8,
+    id: 7,
     type: "imageSelect",
     question: "Select the mirror image of the letter '9'",
     options: [
@@ -72,7 +62,7 @@ export const questions = [
     answer: "d",
   },
   {
-    id: 9,
+    id: 8,
     type: "imageSelect",
     question: "Select the mirror image of the number '3'",
     options: [
@@ -85,7 +75,7 @@ export const questions = [
 
   // 10: Sentence typing to assess motor and memory
   {
-    id: 10,
+    id: 9,
     type: "textInput",
     question: "Type the following sentence: 'Dyslexia is not a disability, it’s a different ability.'",
     answer: "Dyslexia is not a disability, it’s a different ability.",
@@ -93,13 +83,13 @@ export const questions = [
 
   // 11–12: Interactive components for deeper evaluation
   {
-    id: 11,
+    id: 10,
     type: "interactive",
     question: "Complete the Eye Tracking Test to analyze your reading patterns.",
     component: "EyeTrackingTest", // Reference to the EyeTrackingTest component
   },
   {
-    id: 12,
+    id: 11,
     type: "interactive",
     question: "Use the Canvas to draw or write as instructed.",
     component: "Canvas", // Reference to the Canvas component

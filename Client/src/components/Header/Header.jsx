@@ -69,7 +69,7 @@ const Header = () => {
                 <>
                   <li>
                     <NavLink
-                      to="/dashboard"
+                      to="/user"
                       className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
                     >
                       DASHBOARD

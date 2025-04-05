@@ -1,14 +1,16 @@
 import React from "react";
 import "@fontsource/opendyslexic";
 import { useNavigate } from "react-router";
-
+ // Import EyeTrackingTest component
 const Home = () => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/login");
   };
-
+ const eye=()=>{
+  navigate("/EyeTrackingTest")
+ }
   return (
     <>
       {/* Hero Section */}
@@ -57,7 +59,10 @@ const Home = () => {
             animation: fadeIn 0.6s ease-out;
           }
         `}
+
       </style>
+
+      <button onClick={eye}> take test </button>
     </>
   );
 };

@@ -10,7 +10,9 @@ import Dashboard from './components/dashboard/Dashboard.jsx';
 import Chatbot from './components/dashboard/Chatbot.jsx';
 import { Route } from 'react-router-dom';
 import { AuthProvider } from './components/AuthContext';
-
+import User from './components/dashboard/User.jsx';
+import Random from './components/dashboard/Random.jsx';
+import EyeTrackingTest from './components/Home/EyeTrackingTest.jsx';
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />}>
@@ -19,6 +21,9 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login />} />
       <Route path='dashboard' element={<Dashboard />} />
       <Route path='dashboard/chatbot' element={<Chatbot />} />
+      <Route path='EyeTrackingTest' element={<EyeTrackingTest />} />
+      <Route path='user' element={<User />} />
+      <Route path='random' element={<Random />} />
     </Route>
   )
 );

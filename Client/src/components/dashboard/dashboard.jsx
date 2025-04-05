@@ -1,4 +1,3 @@
-// Add this at the top with your other imports
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -22,7 +21,8 @@ const TextEditor = () => {
   useEffect(() => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap";
+    link.href =
+      "https://fonts.googleapis.com/css2?family=OpenDyslexic:wght@400;700&display=swap";
     document.head.appendChild(link);
     return () => document.head.removeChild(link);
   }, []);
@@ -41,7 +41,7 @@ const TextEditor = () => {
       const data = await response.json();
       if (response.ok) {
         setOutputText(data.syllables);
-        setInputText(textToProcess); // Also show the paragraph in the textarea
+        setInputText(textToProcess);
       } else {
         setError(data.error || "Something went wrong.");
       }
@@ -61,7 +61,7 @@ const TextEditor = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify({ language, complexity, topic }),
       });
@@ -87,19 +87,29 @@ const TextEditor = () => {
     setShowFeedbackWindow(true);
     setFeedback("Listening...");
 
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    const recognition = new (window.SpeechRecognition ||
+      window.webkitSpeechRecognition)();
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
     recognition.onresult = (event) => {
-      const spokenText = event.results[0][0].transcript.toLowerCase().replace(/[^a-z0-9 ]/g, "");
-      const cleanedInputText = inputText.toLowerCase().replace(/[^a-z0-9 ]/g, "");
+      const spokenText = event.results[0][0].transcript
+        .toLowerCase()
+        .replace(/[^a-z0-9 ]/g, "");
+      const cleanedInputText = inputText
+        .toLowerCase()
+        .replace(/[^a-z0-9 ]/g, "");
       setRecognizedText(spokenText);
-      setFeedback(spokenText === cleanedInputText ? "Great pronunciation!" : "Try again, keep practicing!");
+      setFeedback(
+        spokenText === cleanedInputText
+          ? "Great pronunciation!"
+          : "Try again, keep practicing!"
+      );
     };
 
-    recognition.onerror = () => setFeedback("Error recognizing speech. Please try again.");
+    recognition.onerror = () =>
+      setFeedback("Error recognizing speech. Please try again.");
     recognition.start();
   };
 
@@ -120,7 +130,9 @@ const TextEditor = () => {
   return (
     <div className="min-h-screen w-full flex justify-center items-center px-6">
       <div className="w-full max-w-3xl bg-[#f5ccad] border border-[#e69b8c] backdrop-blur-md rounded-2xl shadow-lg p-8">
-        <h1 className="text-[#4b4453] text-4xl font-extrabold mb-6 text-center">Text Processor</h1>
+        <h1 className="text-[#4b4453] text-4xl font-extrabold mb-6 text-center">
+          Text Processor
+        </h1>
 
         <textarea
           className="w-full h-48 bg-[#fafafa] border border-[#e0d1c7] rounded-lg text-[#4b4453] px-4 py-3 text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9] transition-all duration-300 resize-none"
@@ -134,7 +146,7 @@ const TextEditor = () => {
 
         <div className="flex justify-center gap-4 mt-6">
           <button
-            className={`bg-blue-600 text-white px-6 py-3 rounded-full font-semibold transition-transform hover:scale-105 ${
+            className={`bg-[#323232] text-white px-6 py-3 rounded-full font-semibold transition-transform hover:scale-105 ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
             onClick={() => processText()}
@@ -144,15 +156,20 @@ const TextEditor = () => {
           </button>
 
           <button
-            className="bg-green-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-green-700 transition-transform hover:scale-105"
+            className="bg-[#323232] text-white px-6 py-3 rounded-full font-semibold transition-transform hover:scale-105"
             onClick={() => setShowModal(true)}
           >
             Generate Text
           </button>
         </div>
 
-        <h3 className="text-2xl font-bold mt-6 text-center text-[#4b4453]">Processed Text:</h3>
-        <div className="bg-[#f5f5f5] border border-[#e0d1c7] p-4 rounded-lg mt-4 shadow-md min-h-[100px] overflow-auto text-center">
+        <h3 className="text-2xl font-bold mt-6 text-center text-[#4b4453]">
+          Processed Text:
+        </h3>
+        <div
+          className="bg-[#f5f5f5] border border-[#e0d1c7] p-4 rounded-lg mt-4 shadow-md min-h-[100px] overflow-auto text-center"
+          style={{ fontFamily: "OpenDyslexic, sans-serif" }}
+        >
           {outputText.length > 0 ? (
             outputText.map((word, index) => (
               <span
@@ -172,7 +189,7 @@ const TextEditor = () => {
 
         <div className="flex justify-center mt-6">
           <button
-            className="bg-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-700 transition-transform hover:scale-105"
+            className="bg-[#323232] text-white px-6 py-3 rounded-full font-semibold transition-transform hover:scale-105"
             onClick={startListening}
           >
             Start Pronouncing
@@ -183,25 +200,27 @@ const TextEditor = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg space-y-4">
-            <h2 className="text-xl font-semibold text-center">Generate Paragraph</h2>
+          <div className="bg-white rounded-2xl px-6 py-5 w-full max-w-sm shadow-xl space-y-4">
+            <h2 className="text-xl font-semibold text-center text-[#4b4453]">
+              Generate Paragraph
+            </h2>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <label className="block font-medium text-gray-700">Language:</label>
               <input
                 type="text"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9]"
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <label className="block font-medium text-gray-700">Complexity:</label>
               <select
                 value={complexity}
                 onChange={(e) => setComplexity(e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9]"
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -209,26 +228,26 @@ const TextEditor = () => {
               </select>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <label className="block font-medium text-gray-700">Topic (optional):</label>
               <input
                 type="text"
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 placeholder="Enter a topic..."
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9]"
               />
             </div>
 
-            <div className="flex justify-end space-x-3 mt-4">
+            <div className="flex justify-end space-x-3 pt-2">
               <button
-                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
+                className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 transition"
                 onClick={() => setShowModal(false)}
               >
                 Cancel
               </button>
               <button
-                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                className="bg-[#323232] text-white px-4 py-2 rounded-md hover:scale-105 transition"
                 onClick={generateAndProcessText}
               >
                 Generate
@@ -242,11 +261,13 @@ const TextEditor = () => {
       {showFeedbackWindow && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-            <h2 className="text-xl font-bold mb-4 text-[#4b4453]">Pronunciation Feedback</h2>
+            <h2 className="text-xl font-bold mb-4 text-[#4b4453]">
+              Pronunciation Feedback
+            </h2>
             <p className="text-gray-700">Recognized: {recognizedText}</p>
             <p className="text-lg font-semibold mt-2">{feedback}</p>
             <button
-              className="mt-4 bg-[#f29b9b] text-white px-6 py-2 rounded-lg hover:bg-[#e68a8a] transition"
+              className="mt-4 bg-[#323232] text-white px-6 py-2 rounded-lg  transition"
               onClick={() => setShowFeedbackWindow(false)}
             >
               Close

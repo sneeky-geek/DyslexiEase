@@ -3,10 +3,32 @@ import MultipleChoice from "./questionTypes/MultipleChoice";
 import ImageSelect from "./questionTypes/ImageSelect";
 import AudioMatch from "./questionTypes/AudioMatch";
 import TextInput from "./questionTypes/TextInput";
-import EyeTrackingTest from "../Home/EyeTrackingTest"; // Import EyeTrackingTest
-import Canvas from "../Home/Canvas"; // Import Canvas
+import EyeTrackingTest from "../Home/EyeTrackingTest";
+import Canvas from "../Home/Canvas";
 
 const QuestionRenderer = ({ question, onAnswer }) => {
+  const renderWithNextButton = (element) => (
+    <div>
+      {element}
+      <button
+        onClick={() => onAnswer(null)}
+        style={{
+          marginTop: "1rem",
+          padding: "0.5rem 1rem",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          borderRadius: "4px",
+          cursor: "pointer",
+        }}
+      >
+        Next
+      </button>
+    </div>
+  );
+
+  if (!question?.type) return <div>No question provided</div>;
+
   switch (question.type) {
     case "multipleChoice":
       return <MultipleChoice question={question} onAnswer={onAnswer} />;
@@ -16,15 +38,15 @@ const QuestionRenderer = ({ question, onAnswer }) => {
       return <AudioMatch question={question} onAnswer={onAnswer} />;
     case "textInput":
       return <TextInput question={question} onAnswer={onAnswer} />;
+    case "eyeTracking":
+      // ✅ FIX: Render EyeTrackingTest once with a button
+      return renderWithNextButton(<EyeTrackingTest />);
+    case "canvas":
     case "interactive":
-      if (question.component === "EyeTrackingTest") {
-        return <Canvas />;
-      } else if (question.component === "Canvas") {
-        return <EyeTrackingTest/>;
-      }
-      return <div>Unknown interactive component</div>;
+      // ✅ FIX: Render Canvas only once with a button
+      return renderWithNextButton(<Canvas />);
     default:
-      return <div>Unknown question type</div>;
+      return <div>Unsupported question type: {question.type}</div>;
   }
 };
 

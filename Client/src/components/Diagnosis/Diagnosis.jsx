@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import Quiz from "./Quiz";
 import Result from "./Result";
+import EyeTrackingTest from "../Home/EyeTrackingTest"; // ✅ import your test component
 
 const Diagnosis = () => {
   const [stage, setStage] = useState("start");
@@ -24,7 +25,20 @@ const Diagnosis = () => {
       )}
 
       {stage === "quiz" && (
-        <Quiz setStage={setStage} setScore={setScore} />
+        <Quiz
+          setStage={(stageFromQuiz) => {
+            if (stageFromQuiz === "result") {
+              setStage("eyeTracking"); // ✅ go to EyeTracking first
+            } else {
+              setStage(stageFromQuiz);
+            }
+          }}
+          setScore={setScore}
+        />
+      )}
+
+      {stage === "eyeTracking" && (
+        <EyeTrackingTest onNext={() => setStage("result")} /> // ✅ show test with next button
       )}
 
       {stage === "result" && <Result score={score} />}

@@ -1,19 +1,25 @@
-
-import React from "react";
-import  { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faX } from "@fortawesome/free-solid-svg-icons";
+import { AuthContext } from "../AuthContext";
 import logo from "../../logo/logo.png";
 import "@fontsource/opendyslexic";
 
 const Header = () => {
+  const { isAuthenticated, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [icon, setIcon] = useState(faBars);
   const [navOpen, setNavOpen] = useState(false);
 
   const toggleNav = () => {
     setIcon((prevIcon) => (prevIcon === faBars ? faX : faBars));
     setNavOpen((prevNavOpen) => !prevNavOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
   };
 
   return (
@@ -44,30 +50,46 @@ const Header = () => {
                   HOME
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/signup"
-                  className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
-                >
-                  SIGN UP
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/login"
-                  className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
-                >
-                  LOGIN
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/dashboard"
-                  className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
-                >
-                  DASHBOARD
-                </NavLink>
-              </li>
+
+              {!isAuthenticated ? (
+                <>
+                  <li>
+                    <NavLink
+                      to="/signup"
+                      className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
+                    >
+                      SIGN UP
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/login"
+                      className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
+                    >
+                      LOGIN
+                    </NavLink>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <NavLink
+                      to="/dashboard"
+                      className="hover:text-[#323232] transition-colors duration-300 hover:underline hover:underline-offset-4"
+                    >
+                      DASHBOARD
+                    </NavLink>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="text-white bg-[#323232] hover:bg-gray-700 font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md hover:scale-105"
+                    >
+                      LOGOUT
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
 

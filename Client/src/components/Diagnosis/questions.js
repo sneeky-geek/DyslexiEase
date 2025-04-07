@@ -10,16 +10,16 @@ export const questions = [
   {
     id: 2,
     type: "multipleChoice",
-    question: "Which of the following is a noun?",
-    options: ["Quickly", "Run", "Apple", "Beautiful"],
-    answer: "Apple",
+    question: "Which word rhymes with 'Mat'",
+    options: ["Cut", "Cat", "Eat", "Dog"],
+    answer: "Eat",
   },
   {
     id: 3,
     type: "multipleChoice",
-    question: "Which of these is a synonym for 'happy'?",
-    options: ["Sad", "Joyful", "Angry", "Scared"],
-    answer: "Joyful",
+    question: "Which word begins with the same sound as 'sun'?",
+    options: ["Sock", "Run", "Car", "House"],
+    answer: "Sock/",
   },
   {
     id: 4,

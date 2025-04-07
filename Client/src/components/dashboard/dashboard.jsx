@@ -9,14 +9,15 @@ const TextEditor = () => {
   const [error, setError] = useState("");
   const [clickedWord, setClickedWord] = useState("");
   const [fontSize, setFontSize] = useState("text-4xl");
-  const [recognizedText, setRecognizedText] = useState("");
-  const [feedback, setFeedback] = useState("Listening...");
-  const [showFeedbackWindow, setShowFeedbackWindow] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
   const [language, setLanguage] = useState("english");
   const [complexity, setComplexity] = useState("intermediate");
   const [topic, setTopic] = useState("");
+
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false);
+  const [recognizedText, setRecognizedText] = useState("");
+  const [feedback, setFeedback] = useState("Listening...");
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -83,15 +84,26 @@ const TextEditor = () => {
       setError("Pronunciation feedback is only available for English text.");
       return;
     }
-    setError("");
-    setShowFeedbackWindow(true);
-    setFeedback("Listening...");
 
-    const recognition = new (window.SpeechRecognition ||
-      window.webkitSpeechRecognition)();
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setError("Speech recognition is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
     recognition.lang = "en-US";
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      console.log("Speech recognition started");
+      setShowFeedbackModal(true);
+      setFeedback("Listening...");
+      setRecognizedText("");
+    };
 
     recognition.onresult = (event) => {
       const spokenText = event.results[0][0].transcript
@@ -100,16 +112,24 @@ const TextEditor = () => {
       const cleanedInputText = inputText
         .toLowerCase()
         .replace(/[^a-z0-9 ]/g, "");
+
       setRecognizedText(spokenText);
       setFeedback(
         spokenText === cleanedInputText
-          ? "Great pronunciation!"
-          : "Try again, keep practicing!"
+          ? "✅ Great pronunciation!"
+          : `❌ Try again! You said: "${spokenText}"`
       );
     };
 
-    recognition.onerror = () =>
-      setFeedback("Error recognizing speech. Please try again.");
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setFeedback("Mic error or access denied. Please try again.");
+    };
+
+    recognition.onend = () => {
+      console.log("Speech recognition ended");
+    };
+
     recognition.start();
   };
 
@@ -142,15 +162,13 @@ const TextEditor = () => {
           Text Processor
         </h1>
 
-        <div className="relative">
-          <textarea
-            className="w-full h-48 bg-[#fafafa] border border-[#e0d1c7] rounded-lg text-[#4b4453] px-4 py-3 text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9] transition-all duration-300 resize-none"
-            placeholder="Enter text here..."
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            style={{ fontFamily: "OpenDyslexic, sans-serif" }}
-          />
-        </div>
+        <textarea
+          className="w-full h-48 bg-[#fafafa] border border-[#e0d1c7] rounded-lg text-[#4b4453] px-4 py-3 text-lg shadow-md focus:outline-none focus:ring-2 focus:ring-[#b8a9c9] transition-all duration-300 resize-none"
+          placeholder="Enter text here..."
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          style={{ fontFamily: "OpenDyslexic, sans-serif" }}
+        />
 
         <div className="flex justify-end mt-2">
           <button
@@ -216,7 +234,7 @@ const TextEditor = () => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Text Generation Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full space-y-4">
@@ -224,14 +242,13 @@ const TextEditor = () => {
 
             <div className="flex flex-col space-y-2">
               <label className="font-medium">Language</label>
-              <select
+              <input
+                type="text"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
                 className="border p-2 rounded"
-              >
-                <option value="english">English</option>
-                <option value="hindi">Hindi</option>
-              </select>
+                placeholder="e.g., English, Hindi..."
+              />
 
               <label className="font-medium">Complexity</label>
               <select
@@ -268,6 +285,27 @@ const TextEditor = () => {
                 Generate
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pronunciation Feedback Modal */}
+      {showFeedbackModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-sm text-center space-y-4">
+            <h2 className="text-lg font-bold">Pronunciation Feedback</h2>
+            <p>{feedback}</p>
+            {recognizedText && (
+              <p className="text-sm text-gray-700">
+                You said: <strong>{recognizedText}</strong>
+              </p>
+            )}
+            <button
+              className="mt-4 bg-[#323232] text-white px-4 py-2 rounded hover:scale-105 transition"
+              onClick={() => setShowFeedbackModal(false)}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

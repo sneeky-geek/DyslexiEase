@@ -26,7 +26,7 @@ const Home = () => {
         className="bg-[#e9c7b2] flex flex-col items-center justify-center w-full min-h-screen text-center font-dyslexic px-4 py-8 sm:py-12 animate-fadeIn"
         style={{ height: "100dvh" }}
       >
-        <div className="max-w-3xl mx-auto space-y-8">
+        <div className="max-w-3xl mx-auto space-y-8 px-4">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
             Read, Learn and Grow with Ease.
           </h1>
@@ -40,19 +40,17 @@ const Home = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={handleClick}
-              className="bg-[#323232] text-white px-8 py-3 rounded-full text-lg sm:text-xl transition-transform transform hover:scale-105 hover:bg-gray-700 duration-300"
+              className="bg-[#323232] text-white px-8 py-3 rounded-full text-lg sm:text-xl transition-transform transform hover:scale-105 hover:bg-gray-700 duration-300 w-full sm:w-auto"
             >
               Start now!
             </button>
 
             <button
               onClick={handleDiagnosis}
-              className="bg-[#323232] text-white px-8 py-3 rounded-full text-lg sm:text-xl transition-transform transform hover:scale-105 hover:bg-gray-700 duration-300"
+              className="bg-[#323232] text-white px-8 py-3 rounded-full text-lg sm:text-xl transition-transform transform hover:scale-105 hover:bg-gray-700 duration-300 w-full sm:w-auto"
             >
               Take Test
             </button>
-
-            
           </div>
         </div>
       </section>

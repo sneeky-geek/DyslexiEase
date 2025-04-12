@@ -17,7 +17,7 @@ const Diagnosis = () => {
           </p>
           <button
             onClick={() => setStage("quiz")}
-            className="px-6 py-3 bg-gray-900 text-white rounded-full shadow-md hover:bg-gray-800 hover:scale-105 transition-transform duration-200"
+            className="px-6 py-3 bg-gray-900 text-white rounded-full shadow-md hover:bg-gray-800 hover:scale-105 transition-transform duration-200 w-full sm:w-auto"
           >
             Start Quiz
           </button>

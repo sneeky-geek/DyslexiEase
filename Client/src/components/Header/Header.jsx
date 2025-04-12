@@ -24,13 +24,13 @@ const Header = () => {
 
   return (
     <header className="bg-[#e9c7b2] font-[OpenDyslexic] shadow-lg">
-      <nav className="flex justify-between items-center w-[92%] mx-auto py-3">
+      <nav className="flex justify-between items-center w-[92%] mx-auto py-3 flex-wrap">
         <div>
           <Link to="/">
             <img
               src={logo}
               alt="logo"
-              className="w-[20vh] transition-transform duration-300 hover:scale-105"
+              className="w-[20vh] transition-transform duration-300 hover:scale-105 max-w-full h-auto"
             />
           </Link>
         </div>
@@ -39,7 +39,7 @@ const Header = () => {
           <div
             className={`lg:static absolute lg:w-auto w-full lg:min-h-fit min-h-[60vh] left-0 ${
               navOpen ? "top-[10%]" : "top-[-100%]"
-            } bg-[#e9c7b2] lg:bg-transparent transition-all duration-500 ease-in-out z-10 shadow-lg lg:shadow-none`}
+            } bg-[#e9c7b2] lg:bg-transparent transition-all duration-500 ease-in-out z-10 shadow-lg lg:shadow-none flex flex-col lg:flex-row`}
           >
             <ul className="flex lg:flex-row flex-col items-center lg:gap-[4.5vw] gap-6 text-[1.3rem]">
               <li>

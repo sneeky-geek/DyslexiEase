@@ -132,3 +132,82 @@ button:hover {
 .chatbot-avatar:hover {
   transform: scale(1.1);
 }
+
+/* =================== */
+/* Responsive Styling  */
+/* =================== */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  textarea {
+    height: 150px;
+  }
+
+  button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .chatbot-container {
+    width: 90%;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .chatbot-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .min-h-screen {
+    min-height: 80vh;
+  }
+
+  .max-w-3xl {
+    max-width: 90%;
+  }
+
+  .rounded-2xl {
+    border-radius: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 12px;
+  }
+
+  textarea {
+    height: 120px;
+  }
+
+  button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .chatbot-container {
+    width: 95%;
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .chatbot-avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .min-h-screen {
+    min-height: 70vh;
+  }
+
+  .max-w-3xl {
+    max-width: 95%;
+  }
+
+  .rounded-2xl {
+    border-radius: 0.8rem;
+  }
+}

@@ -17,6 +17,11 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
+// Health / root endpoint
+app.get('/', (req, res) => {
+  res.status(200).send('DyslexiEase API is running');
+});
+
 // Public routes
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);

@@ -4,21 +4,7 @@ require('dotenv').config();
 
 const router = express.Router();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const preferredModels = ['models/gemini-2.5-flash', 'models/gemini-flash-latest'];
-let model = genAI.getGenerativeModel({ model: preferredModels[0] });
-
-async function generateWithFallback(prompt) {
-  try {
-    return await model.generateContent(prompt);
-  } catch (err) {
-    const msg = (err && (err.message || '')).toString().toLowerCase();
-    if (err && (err.status === 404 || msg.includes('not found') || msg.includes('models/') && msg.includes('not found'))) {
-      model = genAI.getGenerativeModel({ model: preferredModels[1] });
-      return await model.generateContent(prompt);
-    }
-    throw err;
-  }
-}
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 router.post('/chatbot', async (req, res) => {
   try {
@@ -34,8 +20,8 @@ router.post('/chatbot', async (req, res) => {
     - Provide the meaning  
     Here is the word or sentence: "${message}"`;
 
-  const result = await generateWithFallback(prompt);
-  const responseText = (await result.response.text()); // Extracting response text
+    const result = await model.generateContent(prompt);
+    const responseText = result.response.text(); // Extracting response text
 
     res.status(200).json({ response: responseText });
   } catch (error) {

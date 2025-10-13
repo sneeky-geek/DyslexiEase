@@ -8,7 +8,7 @@ import Layout from './Layout.jsx';
 import Home from './components/Home/Home.jsx';
 import Signup from './components/Signup/Signup.jsx';
 import Login from './components/Login/Login.jsx';
-import Dashboard from './components/dashboard/Dashboard.jsx';
+import Dashboard from './components/dashboard/dashboard.jsx';
 import Chatbot from './components/dashboard/Chatbot.jsx';
 import { AuthProvider } from './components/AuthContext';
 import EyeTrackingTest from './components/Home/EyeTrackingTest.jsx';

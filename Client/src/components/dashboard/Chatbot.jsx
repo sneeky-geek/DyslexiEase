@@ -8,7 +8,7 @@ const Chatbot = () => {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
 
   const faqAnswers = useMemo(
     () => ({
@@ -36,28 +36,21 @@ const Chatbot = () => {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            contents: [{ role: "user", parts: [{ text: prompt }] }]
-          })
-        }
-      );
+      const res = await fetch(`${BACKEND_URL}/chatbot`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: prompt })
+      });
 
       const data = await res.json();
-      const botReply =
-        data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
-        "Sorry, I couldn't understand.";
+      const botReply = (data?.response || "").trim() || "Sorry, I couldn't understand.";
 
       setMessages((prev) => [...prev, { role: "model", content: botReply }]);
     } catch (err) {
-      console.error("Gemini API Error:", err);
+      console.error("Chatbot backend error:", err);
       setMessages((prev) => [
         ...prev,
-        { role: "model", content: "⚠️ Gemini API Error. Please try again later." }
+        { role: "model", content: "⚠️ Chatbot Error. Please try again later." }
       ]);
     } finally {
       setLoading(false);

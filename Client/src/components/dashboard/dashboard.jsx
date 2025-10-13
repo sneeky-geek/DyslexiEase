@@ -34,7 +34,8 @@ const TextEditor = () => {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("http://localhost:3002/api/convert", {
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
+  const response = await fetch(`${BACKEND_URL}/api/convert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textToProcess }),
@@ -58,7 +59,7 @@ const TextEditor = () => {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("http://localhost:3002/api/paragraph/generate", {
+  const res = await fetch(`${BACKEND_URL}/api/paragraph/generate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

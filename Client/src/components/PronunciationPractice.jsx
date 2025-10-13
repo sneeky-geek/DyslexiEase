@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ReactMic } from "react-mic";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
+
 const PronunciationPractice = ({ targetText }) => {
   const [recording, setRecording] = useState(false);
   const [transcript, setTranscript] = useState("");
@@ -13,7 +15,7 @@ const PronunciationPractice = ({ targetText }) => {
     const formData = new FormData();
     formData.append("audio", recordedBlob.blob, "audio.wav");
 
-    const res = await fetch("http://localhost:3002/api/transcribe", {
+    const res = await fetch(`${BACKEND_URL}/api/transcribe`, {
       method: "POST",
       body: formData,
     });

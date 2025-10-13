@@ -14,8 +14,10 @@ const SignUp = () => {
     e.preventDefault();
     setError("");
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
+
     try {
-      const response = await axios.post("http://localhost:3002/auth/signup", {
+      const response = await axios.post(`${BACKEND_URL}/auth/signup`, {
         name,
         email,
         password,

@@ -12,6 +12,8 @@ const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -24,7 +26,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3002/auth/login", {
+      const response = await axios.post(`${BACKEND_URL}/auth/login`, {
         email,
         password,
       });

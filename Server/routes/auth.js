@@ -23,6 +23,7 @@ const loginSchema = z.object({
 // Signup Route
 router.post("/signup", async (req, res) => {
   try {
+    console.log('Signup attempt body:', req.body);
     const { name, email, password } = signupSchema.parse(req.body);
 
     if (await Client.findOne({ email })) {
@@ -36,7 +37,11 @@ router.post("/signup", async (req, res) => {
     res.status(201).json({ message: "✅ User created successfully" });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(400).json({ error: error.message });
+    // If this is a Zod validation error, return the issues to help the client debug
+    if (error && error.errors) {
+      return res.status(400).json({ message: 'Validation failed', issues: error.errors });
+    }
+    res.status(400).json({ error: error.message || String(error) });
   }
 });
 

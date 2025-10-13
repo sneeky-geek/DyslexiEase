@@ -8,6 +8,15 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+// Simple request logger to help debug deployment issues (prints method, path, origin, content-type)
+app.use((req, res, next) => {
+  try {
+    console.log(`[Req] ${req.method} ${req.originalUrl} - Origin: ${req.headers.origin || 'no-origin'} - Content-Type: ${req.headers['content-type']}`);
+  } catch (e) {
+    /* ignore logging errors */
+  }
+  next();
+});
 // Configure CORS: allow a comma-separated list in FRONTEND_ORIGINS or fall back to common dev/production origins
 const rawOrigins = process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://dyslexi-ease.onrender.com,https://dyslexiease-1-6vo4.onrender.com';
 const allowedOrigins = rawOrigins.split(',').map(s => s.trim()).filter(Boolean);
@@ -56,6 +65,11 @@ app.use((err, req, res, next) => {
 // Quick handler for preflight requests
 app.options('*', (req, res) => {
   res.sendStatus(204);
+});
+
+// Health check endpoint for verifying the backend is receiving requests
+app.get('/health', (req, res) => {
+  res.json({ ok: true, uptime: process.uptime() });
 });
 
 const PORT = process.env.PORT || 3002;

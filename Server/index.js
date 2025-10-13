@@ -8,11 +8,20 @@ connectDB();
 
 const app = express();
 app.use(express.json());
+// Configure CORS: allow a comma-separated list in FRONTEND_ORIGINS or fall back to common dev/production origins
+const rawOrigins = process.env.FRONTEND_ORIGINS || 'http://localhost:5173,https://dyslexi-ease.onrender.com,https://dyslexiease-1-6vo4.onrender.com';
+const allowedOrigins = rawOrigins.split(',').map(s => s.trim()).filter(Boolean);
+
 app.use(cors({
-  origin: [
-    'http://localhost:5173', // Local development
-    'https://your-frontend-url.onrender.com' // Replace with your frontend URL for production
-  ],
+  origin: (origin, callback) => {
+    // Allow non-browser requests like curl (no origin)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      return callback(null, true);
+    }
+    // Block other origins
+    return callback(new Error('CORS policy: This origin is not allowed'), false);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
@@ -42,6 +51,11 @@ app.get("/dashboard", (req, res) => {
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: "Internal Server Error" });
+});
+
+// Quick handler for preflight requests
+app.options('*', (req, res) => {
+  res.sendStatus(204);
 });
 
 const PORT = process.env.PORT || 3002;

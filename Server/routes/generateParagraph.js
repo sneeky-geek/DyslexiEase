@@ -4,9 +4,23 @@ require('dotenv').config();
 
 const router = express.Router();
 
-// Initialize Gemini model
+// Initialize generative client and preferred models with a fallback
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+const preferredModels = ['models/gemini-2.5-flash', 'models/gemini-flash-latest'];
+let model = genAI.getGenerativeModel({ model: preferredModels[0] });
+
+async function generateWithFallback(prompt) {
+  try {
+    return await model.generateContent(prompt);
+  } catch (err) {
+    const msg = (err && (err.message || '')).toString().toLowerCase();
+    if (err && (err.status === 404 || msg.includes('not found') || (msg.includes('models/') && msg.includes('not found')))) {
+      model = genAI.getGenerativeModel({ model: preferredModels[1] });
+      return await model.generateContent(prompt);
+    }
+    throw err;
+  }
+}
 
 router.post('/generate', async (req, res) => {
   try {
@@ -26,8 +40,8 @@ Generate a paragraph in ${language} that:
 - Respond only with the plain text paragraph (no labels or quotes)
 `;
 
-    const result = await model.generateContent(prompt);
-    const text = (await result.response.text()).trim();
+  const result = await generateWithFallback(prompt);
+  const text = (await result.response.text()).trim();
 
     res.status(200).json({
       paragraph: text,

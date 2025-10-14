@@ -8,6 +8,7 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -25,7 +26,12 @@ const SignUp = () => {
       console.log(response.data);
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "An error occurred. Please try again.");
+      const message = err.response?.data?.message || "An error occurred. Please try again.";
+      setError(message);
+      // If duplicate user, show a prompt to go to login
+      if (err.response?.status === 409) {
+        setShowLoginPrompt(true);
+      }
     }
   };
 
@@ -42,6 +48,17 @@ const SignUp = () => {
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded-md mb-4 text-sm sm:text-base transition-opacity duration-300">
             {error}
+          </div>
+        )}
+
+        {showLoginPrompt && (
+          <div className="flex justify-center mb-4">
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded-md"
+              onClick={() => navigate('/login')}
+            >
+              Go to Login
+            </button>
           </div>
         )}
 

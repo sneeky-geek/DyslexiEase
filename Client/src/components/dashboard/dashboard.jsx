@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const TextEditor = () => {
   const navigate = useNavigate();
+  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -34,8 +35,7 @@ const TextEditor = () => {
     setLoading(true);
     setError("");
     try {
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
-  const response = await fetch(`${BACKEND_URL}/api/convert`, {
+      const response = await fetch(`${BACKEND_URL}/api/convert`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textToProcess }),
